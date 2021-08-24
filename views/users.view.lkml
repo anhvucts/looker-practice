@@ -102,8 +102,15 @@ view: users {
     style:  integer
   }
 
+  # dimension: days since signup
+  dimension: days_since_signup {
+    type: number
+    sql: DATEDIFF(day, ${created_date}, current_date);; # redshift syntax
+  }
+
+
   measure: count {
-    type: count
+    type: number
     drill_fields: [id, last_name, first_name, events.count, order_items.count]
   }
 }

@@ -63,6 +63,7 @@ explore: order_items {
     sql_on: ${products.distribution_center_id} = ${distribution_centers.id} ;;
     relationship: many_to_one
   }
+
 }
 
 explore: products {
@@ -74,5 +75,10 @@ explore: products {
 }
 
 explore: users {
-
+# joining a derived table
+  join: user_order_facts {
+    type: left_outer
+    sql_on: ${users.id} = ${user_order_facts.user_id} ;;
+    relationship: one_to_one
+  }
 }
