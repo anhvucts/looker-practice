@@ -46,7 +46,7 @@ view: user_facts {
 
   measure: avg_order_price {
     type: number
-    sql: ${sum_price}/NULLIF(${count_users},0) ;;
+    sql: SUM(${sum_price})/NULLIF(${count_users},0) ;; # be careful with sum
     value_format_name: usd
   }
 
