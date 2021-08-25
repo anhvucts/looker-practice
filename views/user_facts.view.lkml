@@ -11,7 +11,7 @@ view: user_facts {
         sql: rank() over (partition by user_id order by created_time) ;;
       }
       derived_column: order_rank_sales_price {
-        sql: rank() over (partition by user_id order by sum) ;;
+        sql: rank() over (partition by user_id order by sum_price) ;;
       }
     }
   }
