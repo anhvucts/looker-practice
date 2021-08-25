@@ -64,6 +64,12 @@ explore: order_items {
     relationship: many_to_one
   }
 
+  join: user_order_facts {
+    type: left_outer
+    sql_on: ${users.id} = ${user_order_facts.user_id} ;;
+    relationship: one_to_one
+  }
+
 }
 
 explore: products {
