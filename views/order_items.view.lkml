@@ -98,7 +98,7 @@ view: order_items {
     sql_end: ${delivered_date} ;;
   }
 
-  measure: sum {
+  measure: sum_price {
     label: "Total sale price"
     type: sum
     sql: ${sale_price} ;;
@@ -135,7 +135,7 @@ view: order_items {
   # perc of sales for users with email as traffic source
   measure: perc_sales_email_users {
     type: number
-    sql: ${total_sales_email_users}/NULLIF(${sum}, 0);;
+    sql: ${total_sales_email_users}/NULLIF(${sum_price}, 0);;
     value_format_name: percent_1
   }
 
@@ -159,7 +159,7 @@ view: order_items {
 
   measure: avg_spend_per_user {
     type: number
-    sql: ${sum}/${count} ;;
+    sql: ${sum_price}/${count} ;;
     value_format_name: usd
   }
 }

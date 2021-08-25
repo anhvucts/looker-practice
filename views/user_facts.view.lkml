@@ -5,7 +5,7 @@ view: user_facts {
     explore_source: order_items {
       column: order_id {}
       column: user_id {}
-      column: sum {}
+      column: sum_price {}
       column: created_time {}
       derived_column: order_sequence_number {
         sql: rank() over (partition by user_id order by created_time) ;;
@@ -21,7 +21,7 @@ view: user_facts {
   dimension: user_id {
     type: number
   }
-  dimension: sum {
+  dimension: sum_price {
     label: "Order Items Total sale price"
     value_format: "$#,##0.00"
     type: number
@@ -46,7 +46,7 @@ view: user_facts {
 
   measure: avg_order_price {
     type: average
-    sql: ${sum}/NULLIF(${count_users},0) ;;
+    sql: ${sum_price}/NULLIF(${count_users},0) ;;
     value_format_name: usd
   }
 
