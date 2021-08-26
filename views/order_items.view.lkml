@@ -159,7 +159,7 @@ view: order_items {
   measure: perc_sales_value {
     label: "Percentage of sales values"
     type: percent_of_total
-    sql: ${sale_price} ;;
+    sql: ${sum_price} ;;
   }
 
   measure: count {
