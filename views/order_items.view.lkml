@@ -155,6 +155,13 @@ view: order_items {
     value_format_name: percent_1
   }
 
+  # perc sales
+  measure: perc_sales_value {
+    label: "Percentage of sales values"
+    type: percent_of_total
+    sql: ${sale_price} ;;
+  }
+
   measure: count {
     type: count
     drill_fields: [detail*]
