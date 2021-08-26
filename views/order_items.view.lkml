@@ -98,6 +98,22 @@ view: order_items {
     sql_end: ${delivered_date} ;;
   }
 
+  # multiple condition filter
+  measure: status_cancelled_ocean_avenue {
+    type: count
+    filters: [status: "-Cancelled"]
+  }
+
+  measure: min_shipping_days {
+    type: min
+    sql: ${shipping_days} ;;
+  }
+
+  measure: max_shipping_days {
+    type: max
+    sql: ${shipping_days} ;;
+  }
+
   measure: sum_price {
     label: "Total sale price"
     type: sum
