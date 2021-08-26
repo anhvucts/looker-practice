@@ -72,6 +72,7 @@ explore: order_items {
     relationship: one_to_one
   }
 
+
 }
 
 explore: products {
@@ -88,5 +89,8 @@ explore: users {
     type: left_outer
     sql_on: ${users.id} = ${user_order_facts.user_id} ;;
     relationship: one_to_one
-  }
+  }}
+
+explore: test_dimensionalize_measure {
+
 }

@@ -19,17 +19,10 @@ view: test_dimensionalize_measure {
     sql: ${TABLE}."TOTAL_ORDERS" ;;
   }
 
-  measure: count {
-    type: count
-    drill_fields: [detail*]
-  }
-
   measure: avg_count {
     type: average
-    sql: ${count} ;;
+    sql: ${total_orders} ;;
   }
 
-  set: detail {
-    fields: [city, total_orders]
-  }
+
 }
