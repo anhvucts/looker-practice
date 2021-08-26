@@ -6,7 +6,7 @@ include: "/views/**/*.view"
 datagroup: ecommerce_etl {
   ### Datagroups Allow you to sync cache and Persisted Derived Tables to events like ETL
   sql_trigger: SELECT max(completed_at) FROM public.etl_jobs ;;
-  max_cache_age: "2 hours"
+  max_cache_age: "1 hour"
 }
 
 persist_with: ecommerce_etl
