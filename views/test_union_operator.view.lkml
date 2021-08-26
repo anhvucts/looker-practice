@@ -5,3 +5,5 @@ view: test_union_operator {
           (SELECT * FROM users);;
   }
 }
+
+# try intersect except minus
