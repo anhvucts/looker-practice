@@ -98,7 +98,7 @@ view: users {
   dimension: age_group {
     type:  tier
     sql: ${age} ;;
-    tiers: [18, 25, 35, 45, 55, 65, 75, 90]
+    tiers: [15, 26, 36, 51, 66]
     style:  integer
   }
 
@@ -106,11 +106,6 @@ view: users {
   dimension: days_since_signup {
     type: number
     sql: DATEDIFF(day, ${created_date}, current_date);; # redshift syntax
-  }
-
-  measure: signup_date {
-    type: date_time
-    sql: min(${created_date}) ;;
   }
 
   measure: count {
