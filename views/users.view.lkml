@@ -25,6 +25,13 @@ view: users {
     sql: ${TABLE}."COUNTRY" ;;
   }
 
+  dimension: state_location {
+    type: location
+    sql_latitude: ${latitude} ;;
+    sql_longitude:${longitude};;
+    drill_fields: [products.category, products.brand]
+  }
+
   dimension_group: created {
     type: time
     timeframes: [
