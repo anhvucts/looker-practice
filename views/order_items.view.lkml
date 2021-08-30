@@ -237,6 +237,7 @@ view: order_items {
   }
 # % gross revenue
   measure: perc_gross_revenue {
+    label: "Percentage of Gross Revenue "
     type: percent_of_total
     sql: ${total_gross_revenue} ;;
   }
