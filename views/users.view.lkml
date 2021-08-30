@@ -77,7 +77,9 @@ view: users {
   dimension: traffic_source {
     type: string
     sql: ${TABLE}."TRAFFIC_SOURCE" ;;
+    drill_fields: [age_group, gender, is_new_customer]
   }
+
   # dimension: email or not
   dimension: is_traffic_source_email {
     type: yesno
