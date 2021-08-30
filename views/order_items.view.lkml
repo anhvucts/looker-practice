@@ -186,7 +186,7 @@ view: order_items {
     type: number
     sql: ${total_gross_margin}/NULLIF(${total_gross_revenue},0);;
     value_format: "0%"
-    drill_fields: [perc_sales_value]
+    drill_fields: [products.category, products.id]
   }
 
 # Number of items returned
@@ -235,13 +235,6 @@ view: order_items {
     type: percent_of_total
     sql: ${count_orders} ;;
   }
-# % gross revenue
-  measure: perc_gross_revenue {
-    label: "Percentage of Gross Revenue "
-    type: percent_of_total
-    sql: ${total_gross_revenue} ;;
-  }
-
 
 # total sales for users with email as traffic source
   measure: total_sales_email_users {
