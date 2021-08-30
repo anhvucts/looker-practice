@@ -100,6 +100,7 @@ view: users {
     sql: ${age} ;;
     tiers: [15, 26, 36, 51, 66]
     style:  integer
+    drill_fields: [gender]
   }
 
   # dimension: days since signup
