@@ -175,7 +175,7 @@ view: order_items {
   measure: avg_gross_margin {
     label: "Average Gross Margin"
     type: number
-    sql: ${total_gross_margin}/${count_inventory_items};;
+    sql: ${total_gross_margin}/NULLIF(${count_inventory_items}, 0);;
     value_format_name: usd
   }
 
@@ -184,7 +184,7 @@ view: order_items {
   measure: gross_margin_perc {
     label: "Gross Margin Percentage"
     type: number
-    sql: ${total_gross_margin}/${total_gross_revenue};;
+    sql: ${total_gross_margin}/NULLIF(${total_gross_revenue},0);;
     value_format: "0%"
   }
 
