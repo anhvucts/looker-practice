@@ -186,6 +186,7 @@ view: order_items {
     type: number
     sql: ${total_gross_margin}/NULLIF(${total_gross_revenue},0);;
     value_format: "0%"
+    drill_fields: [perc_sales_value]
   }
 
 # Number of items returned
