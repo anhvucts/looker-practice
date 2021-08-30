@@ -109,6 +109,11 @@ view: users {
     sql: DATEDIFF(day, ${created_date}, current_date);; # redshift syntax
   }
 
+  dimension: is_new_customer {
+    type: yesno
+    sql: ${days_since_signup} <= 90 ;;
+  }
+
   measure: count {
     type: count
     drill_fields: [users.id, users.last_name, users.first_name, events.count, order_items.count]
