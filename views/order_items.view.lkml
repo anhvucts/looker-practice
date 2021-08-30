@@ -114,34 +114,128 @@ view: order_items {
     sql: ${shipping_days} ;;
   }
 
-measure: sum_price {
-  label: "Total Sale Price Items Sold"
-  # filters: [order_items.status: "Complete"]
-  type: sum
-  sql: ${sale_price};;
-  value_format_name: usd
+# Total Sale Price Items Sold
+  measure: sum_price {
+    label: "Total Sale Price Items Sold"
+    # filters: [order_items.status: "Complete"]
+    type: sum
+    sql: round(${sale_price});;
+    value_format_name: usd
 }
 
-  measure: average {
-    label: "Average sale price"
-    type:  average
-    sql: ${sale_price} ;;
+# Average Sale Price
+  measure: avg_sale_price {
+    label: "Average Sale Price Items Sold"
+    # filters: [order_items.status: "Complete"] #
+    type: average
+    sql: ${sale_price};;
     value_format_name: usd
   }
 
+  measure: cumulative_total_sales {
+    label: "Cumulative Total Sales"
+    type:  running_total
+    sql: ${sale_price} ;;
+    value_format_name:  usd
+  }
+
+# Total Gross Revenue
+
+  measure: total_gross_revenue {
+    label: "Total Gross Revenue"
+    type: sum
+    filters: [order_items.status: "-Cancelled, -Returned"]
+    sql: ${sale_price};;
+    value_format_name: usd
+  }
+
+# Total orders
   measure: count_orders {
     label: "Total orders"
     type:  count_distinct
     sql: ${order_id} ;;
   }
-  # % unique orders
+
+# Total Gross Margin Amount
+  measure: total_gross_margin {
+    label: "Total Gross Margin Amount"
+    type: number
+    sql: ${total_gross_revenue} - ${inventory_items.total_cost};;
+    value_format_name: usd
+  }
+
+# Total unique inventory items
+  measure: count_inventory_items {
+    type: count_distinct
+    sql: ${inventory_item_id} ;;
+  }
+
+# Average Gross Margin -- double check this
+
+  measure: avg_gross_margin {
+    label: "Average Gross Margin"
+    type: number
+    sql: ${total_gross_margin}/${count_inventory_items};;
+    value_format_name: usd
+  }
+
+# Gross Margin
+
+  measure: gross_margin_perc {
+    label: "Gross Margin Percentage"
+    type: number
+    sql: ${total_gross_margin}/${total_gross_revenue};;
+    value_format: "0%"
+  }
+
+# Number of items returned
+
+  measure: total_items_returned {
+    label: "Number of Items Returned"
+    type: count_distinct
+    filters: [status: "Returned"]
+    sql: ${inventory_item_id};;
+  }
+
+# Item Return Rate
+
+  measure: item_return_rate {
+    type: number
+    sql: ${total_items_returned}/count(${inventory_item_id});;
+    value_format: "0%"
+  }
+# Number of customers who return items
+
+  measure: total_users_return_item {
+    type: count_distinct
+    filters: [status: "Returned"]
+    sql: ${user_id} ;;
+  }
+
+# % users with returns
+  measure: perc_users_return {
+    label: "% users with returns"
+    type: number
+    sql: ${total_users_return_item}/count(distinct(${user_id}));;
+    value_format: "0%"
+  }
+
+# Avg spend per customer
+  measure: avg_spend_per_customer {
+    label: "Average Spend Per Customer"
+    type: number
+    sql: ${sum_price}/count(distinct(${user_id}));;
+    value_format_name: usd
+  }
+
+# % unique orders
   measure: perc_orders {
     label: "Percentage orders"
     type: percent_of_total
     sql: ${count_orders} ;;
   }
 
-  # total sales for users with email as traffic source
+# total sales for users with email as traffic source
   measure: total_sales_email_users {
     type: sum
     filters: [users.traffic_source: "Email"]
@@ -179,11 +273,5 @@ measure: sum_price {
       users.id
     ]
   }
-  # avg spend per user
 
-  measure: avg_spend_per_user {
-    type: number
-    sql: ${sum_price}/${count} ;;
-    value_format_name: usd
-  }
 }

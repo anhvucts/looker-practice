@@ -108,6 +108,10 @@ view: users {
     sql: DATEDIFF(day, ${created_date}, current_date);; # redshift syntax
   }
 
+  measure: signup_date {
+    type: date_time
+    sql: min(${created_date}) ;;
+  }
 
   measure: count {
     type: count
