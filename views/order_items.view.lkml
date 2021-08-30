@@ -114,12 +114,13 @@ view: order_items {
     sql: ${shipping_days} ;;
   }
 
-  measure: sum_price {
-    label: "Total sale price"
-    type: sum
-    sql: ${sale_price} ;;
-    value_format_name: usd
-  }
+measure: sum_price {
+  label: "Total Sale Price Items Sold"
+  # filters: [order_items.status: "Complete"]
+  type: sum
+  sql: ${sale_price};;
+  value_format_name: usd
+}
 
   measure: average {
     label: "Average sale price"

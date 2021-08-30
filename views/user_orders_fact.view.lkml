@@ -1,17 +1,16 @@
 view: user_order_facts {
-  derived_table: {
-    sql: SELECT
-        user_id,
-        count(distinct(order_id)) AS total_orders,
-        SUM(sale_price) AS total_order_values,
-        min(created_at) AS first_purchase_date,
-        max(created_at) AS last_purchase_date
-      FROM order_items
-      GROUP BY user_id
-      LIMIT 10
+  derived_table: { # this is a SQL-derived table/Ephermeral DT
+    sql:  SELECT
+              user_id,
+              count(distinct(order_id)) AS total_orders,
+              SUM(sale_price) AS total_order_values,
+              min(created_at) AS first_purchase_date,
+              max(created_at) AS last_purchase_date
+          FROM order_items
+          GROUP BY user_id
+          LIMIT 10
        ;;
   }
-
 
   dimension: user_id {
     primary_key: yes # IMPORTANT TO KEEP THE PRIMARY KEY DECLARED
