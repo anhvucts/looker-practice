@@ -235,6 +235,12 @@ view: order_items {
     type: percent_of_total
     sql: ${count_orders} ;;
   }
+# % gross revenue
+  measure: perc_gross_revenue {
+    type: percent_of_total
+    sql: ${total_gross_revenue} ;;
+  }
+
 
 # total sales for users with email as traffic source
   measure: total_sales_email_users {
