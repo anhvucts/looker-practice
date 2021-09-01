@@ -93,7 +93,7 @@ view: customer_purchase_behavior {
   }
 
   measure: count {
-    label: "Total"
+    label: "Count"
     type: count
     drill_fields: [detail*]
   }
@@ -110,10 +110,8 @@ view: customer_purchase_behavior {
     sql: ${customer_lifetime_revenues} ;;
   }
 
-
   measure: years_alive {
-    hidden: yes
-    type: number
+    type: max
     sql: ${years_being_alive} ;;
   }
 
@@ -135,6 +133,17 @@ view: customer_purchase_behavior {
     type: average
     filters: [is_alive: "yes"]
     sql: ROUND(${days_since_last_purchase}, 0) ;;
+  }
+
+  measure: avg_spend_of_all {
+    type: average
+    sql: ROUND(${customer_lifetime_revenues}, 0) ;;
+    value_format_name: usd
+  }
+
+  measure: avg_order_of_all {
+    type: average
+    sql: ROUND(${customer_lifetime_orders}, 1) ;; # check on rounding
   }
 
   set: detail {
