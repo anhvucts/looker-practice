@@ -92,3 +92,7 @@ explore: users {
 explore: test_dimensionalize_measure {
 
 }
+
+explore: customer_purchase_behavior{
+
+}
