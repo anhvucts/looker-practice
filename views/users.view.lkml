@@ -123,6 +123,7 @@ view: users {
     sql: ${days_since_signup} <= 90 ;;
   }
 
+
   measure: count {
     type: count
     drill_fields: [users.id, users.last_name, users.first_name, events.count, order_items.count]
