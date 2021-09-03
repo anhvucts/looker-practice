@@ -84,18 +84,18 @@ explore: products {
 
 explore: users {
 # joining a derived table
-  group_label: "Users and their purchasing behaviors"
+  # group_label: "Users and their purchasing behaviors"
   join: user_order_facts {
     type: left_outer
     sql_on: ${users.id} = ${user_order_facts.user_id} ;;
     relationship: one_to_one
   }
 
-  #join: customer_purchase_behavior {
-   # type: left_outer
-    #sql_on: ${customer_purchase_behavior.user_id} = ${users.id} ;;
-    #relationship: one_to_one
-  #}
+  join: customer_purchase_behavior {
+   type: left_outer
+    sql_on: ${customer_purchase_behavior.user_id} = ${users.id} ;;
+    relationship: one_to_one
+  }
 }
 
 explore: test_dimensionalize_measure {
