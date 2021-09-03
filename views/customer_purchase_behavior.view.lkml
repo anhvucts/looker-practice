@@ -100,13 +100,13 @@ view: customer_purchase_behavior {
 
   measure: clv_orders {
     label: "Total Lifetime Orders"
-    type: max
+    type: sum
     sql: ${customer_lifetime_orders} ;;
   }
 
   measure: clv_revenues {
     label: "Total Lifetime Revenue"
-    type: max
+    type: sum
     sql: ${customer_lifetime_revenues} ;;
   }
 
@@ -133,17 +133,6 @@ view: customer_purchase_behavior {
     type: average
     filters: [is_alive: "yes"]
     sql: ROUND(${days_since_last_purchase}, 0) ;;
-  }
-
-  measure: avg_spend_of_all {
-    type: average
-    sql: ROUND(${customer_lifetime_revenues}, 0) ;;
-    value_format_name: usd
-  }
-
-  measure: avg_order_of_all {
-    type: average
-    sql: ROUND(${customer_lifetime_orders}, 1) ;; # check on rounding
   }
 
   set: detail {
