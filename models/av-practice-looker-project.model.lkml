@@ -71,6 +71,7 @@ explore: order_items {
     sql_on: ${users.id} = ${user_order_facts.user_id} ;;
     relationship: one_to_one
   }
+
 }
 
 explore: products {
@@ -83,6 +84,7 @@ explore: products {
 
 explore: users {
 # joining a derived table
+  group_label: "Users and their purchasing behaviors"
   join: user_order_facts {
     type: left_outer
     sql_on: ${users.id} = ${user_order_facts.user_id} ;;
@@ -101,5 +103,5 @@ explore: test_dimensionalize_measure {
 }
 
 explore: customer_purchase_behavior{
-
+  description: "Explore customer purchasing behaviors across lifetimes"
 }
