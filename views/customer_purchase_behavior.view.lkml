@@ -110,21 +110,17 @@ view: customer_purchase_behavior {
     sql: ${customer_lifetime_revenues} ;;
   }
 
-  measure: years_alive {
-    type: max
-    sql: ${years_being_alive} ;;
-  }
 
   measure: avg_lifetime_orders { # double check the denominator
     label: "Average Lifetime Orders"
     type: number
-    sql: ${clv_orders}/NULLIF(${years_alive}, 0);;
+    sql: ${clv_orders}/NULLIF(${count}, 0);;
   }
 
   measure: avg_lifetime_revenue {
     label: "Average Lifetime Revenues"
     type: number
-    sql: ${clv_revenues}/NULLIF(${years_alive}, 0) ;;
+    sql: ${clv_revenues}/NULLIF(${count},0) ;;
   }
 
 
