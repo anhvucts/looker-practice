@@ -98,6 +98,14 @@ view: order_items {
     sql_end: ${delivered_date} ;;
   }
 
+  # Days between signup and all purchases
+
+  dimension_group: bought_after_signup {
+    type: duration
+    sql_start: ${users.created_date} ;;
+    sql_end: ${created_date} ;;
+  }
+
   # multiple condition filter
   measure: status_cancelled_ocean_avenue {
     type: count

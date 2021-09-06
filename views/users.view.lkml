@@ -118,11 +118,34 @@ view: users {
     sql: DATEDIFF(day, ${created_date}, current_date);; # redshift syntax
   }
 
+
   dimension: is_new_customer {
     type: yesno
     sql: ${days_since_signup} <= 90 ;;
   }
 
+  dimension: months_since_signup {
+    type: number
+    sql: DATEDIFF(month, ${created_date}, current_date) ;;
+  }
+
+  dimension: cohort_group {
+    type: tier
+    sql: ${days_since_signup} ;;
+    tiers: [30, 60, 90, 180, 365]
+    style:  integer
+  }
+
+
+  measure: avg_days_from_signup {
+    type: average
+    sql: ${days_since_signup} ;;
+  }
+
+  measure: avg_months_from_signup {
+    type: average
+    sql: ${months_since_signup} ;;
+  }
 
   measure: count {
     type: count

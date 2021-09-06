@@ -99,4 +99,9 @@ explore: test_dimensionalize_measure {
 
 explore: customer_purchase_behavior{
   description: "Explore customer purchasing behaviors across lifetimes"
+  join: users {
+    type: left_outer
+    sql_on: ${customer_purchase_behavior.user_id} = ${users.id} ;;
+    relationship: one_to_one
+  }
 }
