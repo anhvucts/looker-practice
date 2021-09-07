@@ -72,6 +72,11 @@ explore: order_items {
     relationship: one_to_one
   }
 
+  join: order_frequency {
+    type: left_outer
+    sql_on: ${order_items.id} = ${order_frequency.id} ;;
+    relationship: one_to_one
+  }
 }
 
 explore: products {
