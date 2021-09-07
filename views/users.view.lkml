@@ -136,11 +136,11 @@ view: users {
     style:  integer
   }
 
-
   measure: avg_days_from_signup {
     type: average
     sql: ${days_since_signup} ;;
   }
+
 
   measure: avg_months_from_signup {
     type: average

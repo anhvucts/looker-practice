@@ -95,7 +95,11 @@ explore: users {
     sql_on: ${users.id} = ${user_order_facts.user_id} ;;
     relationship: one_to_one
   }
-
+  join: customer_purchase_behavior{
+    type: left_outer
+    sql_on: ${users.id} = ${customer_purchase_behavior.user_id} ;;
+    relationship: one_to_one
+  }
 }
 
 
