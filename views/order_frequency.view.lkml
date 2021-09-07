@@ -48,6 +48,13 @@ view: order_frequency {
     sql: ${TABLE}."DAYS_FROM_PREV_ORDER" ;;
   }
 
+  # add new dimension: is_repeating_customer
+
+  dimension: is_repeating_purchase {
+    type: yesno
+    sql: ${order_rank} > 1 ;;
+  }
+
   set: detail {
     fields: [user_id, id, created_at_time, order_rank, days_from_prev_order]
   }
