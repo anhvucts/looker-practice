@@ -98,9 +98,6 @@ explore: users {
 
 }
 
-explore: test_dimensionalize_measure {
-
-}
 
 explore: customer_purchase_behavior{
   description: "Explore customer purchasing behaviors across lifetimes"
@@ -111,4 +108,10 @@ explore: customer_purchase_behavior{
   }
 }
 
-explore: order_frequency {}
+explore: order_frequency {
+  join: users {
+    type: left_outer
+    sql_on: ${order_frequency.user_id} = ${users.id} ;;
+    relationship: many_to_one
+  }
+}
