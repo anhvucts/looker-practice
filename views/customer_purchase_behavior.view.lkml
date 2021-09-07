@@ -122,6 +122,8 @@ view: customer_purchase_behavior {
     label: "Average Lifetime Revenues"
     type: number
     sql: ${clv_revenues}/NULLIF(${count},0) ;;
+    value_format_name: usd
+
   }
 
 
