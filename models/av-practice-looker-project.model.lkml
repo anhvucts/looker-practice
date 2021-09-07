@@ -105,3 +105,5 @@ explore: customer_purchase_behavior{
     relationship: one_to_one
   }
 }
+
+explore: order_frequency {}
