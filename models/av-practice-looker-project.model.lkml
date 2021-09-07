@@ -100,8 +100,9 @@ explore: users {
     sql_on: ${users.id} = ${customer_purchase_behavior.user_id} ;;
     relationship: one_to_one
   }
-}
 
+
+}
 
 explore: customer_purchase_behavior{
   description: "Explore customer purchasing behaviors across lifetimes"
@@ -116,6 +117,11 @@ explore: order_frequency {
   join: users {
     type: left_outer
     sql_on: ${order_frequency.user_id} = ${users.id} ;;
+    relationship: many_to_one
+  }
+  join: customer_purchase_behavior {
+    type: left_outer
+    sql_on: ${order_frequency.user_id} = ${customer_purchase_behavior.user_id} ;;
     relationship: many_to_one
   }
 }

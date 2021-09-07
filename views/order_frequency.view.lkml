@@ -5,8 +5,7 @@ view: order_frequency {
         id,
         created_at,
         ROW_NUMBER () OVER (PARTITION BY user_id ORDER BY created_at) AS order_rank,
-        LAG(created_at) OVER (PARTITION BY user_id ORDER BY created_at) AS previous_order_date,
-        LEAD(created_at) OVER (PARTITION BY user_id ORDER BY created_at) AS next_order_date
+        LAG(created_at) OVER (PARTITION BY user_id ORDER BY created_at) AS previous_order_date
       FROM order_items)
 
       SELECT
@@ -14,8 +13,7 @@ view: order_frequency {
         id,
         created_at,
         order_rank,
-        DATEDIFF(day, previous_order_date, created_at) AS days_from_prev_order,
-        CASE WHEN next_order_date IS NOT NULL THEN 1 ELSE 0 END AS is_subsequent_customer
+        DATEDIFF(day, previous_order_date, created_at) AS days_from_prev_order
       FROM S
        ;;
   }
@@ -48,11 +46,6 @@ view: order_frequency {
   dimension: days_from_prev_order {
     type: number
     sql: ${TABLE}."DAYS_FROM_PREV_ORDER" ;;
-  }
-
-  dimension: is_subsequent_customer {
-    type: string
-    sql: ${TABLE}."IS_SUBSEQUENT_CUSTOMER";;
   }
 
   # add new dimension: is_repeating_customer
