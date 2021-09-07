@@ -31,6 +31,7 @@ view: order_frequency {
   dimension: id {
     type: number
     sql: ${TABLE}."ID" ;;
+    primary_key: yes
   }
 
   dimension_group: created_at {
@@ -54,7 +55,7 @@ view: order_frequency {
     type: yesno
     sql: ${order_rank} > 1 ;;
   }
-  dimension: repeating_customer_60days {
+  dimension: is_repeating_customer_60days {
     type: yesno
     sql: ${days_from_prev_order} <=60 ;;
   }

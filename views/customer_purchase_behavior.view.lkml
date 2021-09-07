@@ -32,6 +32,7 @@ view: customer_purchase_behavior {
   dimension: user_id {
     type: number
     sql: ${TABLE}."USER_ID" ;;
+    primary_key: yes
   }
 
   dimension: customer_lifetime_orders {
