@@ -116,6 +116,7 @@ view: customer_purchase_behavior {
     label: "Average Lifetime Orders"
     type: number
     sql: ${clv_orders}/NULLIF(${count}, 0);;
+    value_format: "0"
   }
 
   measure: avg_lifetime_revenue {
