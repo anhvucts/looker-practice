@@ -1,6 +1,7 @@
+include: "/views/geography_fields.view"
 view: users {
-  sql_table_name: "PUBLIC"."USERS"
-    ;;
+  extends: [geography_fields]
+  sql_table_name: "PUBLIC"."USERS";;
   drill_fields: [id]
 
   dimension: id {
@@ -140,7 +141,6 @@ view: users {
     type: average
     sql: ${days_since_signup} ;;
   }
-
 
   measure: avg_months_from_signup {
     type: average

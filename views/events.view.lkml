@@ -1,6 +1,7 @@
+include: "/views/geography_fields.view"
 view: events {
-  sql_table_name: "PUBLIC"."EVENTS"
-    ;;
+  extends: [geography_fields]
+  sql_table_name: "PUBLIC"."EVENTS";;
   drill_fields: [id]
 
   dimension: id {

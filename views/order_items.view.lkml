@@ -23,6 +23,13 @@ view: order_items {
     sql: ${TABLE}."CREATED_AT" ;;
   }
 
+# try formatting
+  dimension: created_html {
+    type: date
+    sql: ${created_date} ;;
+    html: {{rendered_value | date: "%B %e, %Y"}} ;;
+  }
+
   dimension_group: delivered {
     type: time
     timeframes: [
@@ -264,6 +271,48 @@ view: order_items {
     label: "Percentage of sales values"
     type: percent_of_total
     sql: ${sum_price} ;;
+  }
+
+  # total profit measure
+  measure: total_profit_example {
+    type:  number
+    sql: ${total_gross_revenue} - SUM(${inventory_items.cost}) ;;
+    value_format_name: usd
+    html: <font color="green">{{rendered_value}}</font> ;;
+  }
+
+  # total revenue measure html formatting
+
+  measure: total_revenue_html {
+    type: sum
+    sql: ${sale_price} ;;
+    html: {{rendered_value | replace: ',', '.'}} ;;
+  }
+
+  # measure count html
+  measure: count_html {
+    type: count
+    drill_fields: [products.category, total_gross_revenue]
+    html: <a href="{{ link }}&f[total_gross_revenue]=>=50000">{{
+rendered_value }}</a> ;;
+  }
+  # measure count link
+  measure: count_link {
+    type: count
+    drill_fields: [products.category, total_gross_revenue]
+    link: {
+      label: "Revenue breakdown < 50000"
+      url: "{{link}}&f[total_gross_revenue]=>=50000"
+    }
+  }
+
+  # measure count link value
+  measure: count_example {
+    type: count
+    drill_fields:
+    [orders.id,orders.created_date,orders.created_quarter,orders.status,orders.user_id,order_items.total_profit]
+    html: <p style="font-size: 15px"><a href="{{link}}"> {{rendered_value}}
+</a></p> ;;
   }
 
   measure: count {

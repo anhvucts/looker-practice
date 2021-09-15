@@ -22,6 +22,11 @@ view: products {
   dimension: category {
     type: string
     sql: ${TABLE}."CATEGORY" ;;
+    link: {
+      label: "Google Search"
+      url: "https://www.google.com/search?q={{value}}"
+      icon_url: "https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
+    }
   }
 
   dimension: cost {

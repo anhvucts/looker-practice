@@ -15,7 +15,14 @@ explore: distribution_centers {}
 
 explore: etl_jobs {}
 
-explore: user_facts {}
+explore: user_facts {
+  # join: users {
+  #   type: left_outer
+  #   sql_on: ${user_facts.user_id} = ${users.id} ;;
+  #   relationship: one_to_one
+  # }
+  # sql_always_having: ${avg_order_price} > 2000 ;; # recommended practice
+}
 
 explore: events {
    join: users {

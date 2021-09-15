@@ -26,8 +26,10 @@ view: user_facts {
     value_format: "$#,##0.00"
     type: number
   }
-  dimension: created_time {
-    type: date_time
+  dimension_group: created_time {
+    type: time
+    timeframes: [time, date, week, month, year, raw]
+
   }
 
   # dont forget to reference the new derived columns!
