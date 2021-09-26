@@ -4,7 +4,7 @@ view: order_items {
   drill_fields: [id]
 
   dimension: id {
-    primary_key: yes
+    #primary_key: yes
     type: number
     sql: ${TABLE}."ID" ;;
   }
@@ -53,6 +53,7 @@ view: order_items {
 
   dimension: order_id {
     type: number
+    primary_key: yes
     sql: ${TABLE}."ORDER_ID" ;;
   }
 
@@ -130,9 +131,21 @@ view: order_items {
     sql: ${shipping_days} ;;
   }
 
+  measure: median_sale_price {
+    type: median
+    sql: ${sale_price};;
+  }
+
+  measure: percentile_25 {
+    type: percentile
+    percentile: 25
+    sql: ${sale_price};;
+  }
+
+
 # Total Sale Price Items Sold
   measure: sum_price {
-    label: "Total Sale Price Items Sold"
+    label: "Total Sale Price"
     # filters: [order_items.status: "Complete"]
     type: sum
     sql: round(${sale_price});;
@@ -151,8 +164,9 @@ view: order_items {
   measure: cumulative_total_sales {
     label: "Cumulative Total Sales"
     type:  running_total
-    sql: ${sale_price} ;;
+    sql: ${sum_price} ;;
     value_format_name:  usd
+    #direction: "column"
   }
 
 # Total Gross Revenue
@@ -170,6 +184,10 @@ view: order_items {
     label: "Total orders"
     type:  count_distinct
     sql: ${order_id} ;;
+  }
+
+  measure: order_count {
+    type: count
   }
 
 # Total Gross Margin Amount
@@ -241,7 +259,7 @@ view: order_items {
   measure: avg_spend_per_customer {
     label: "Average Spend Per Customer"
     type: number
-    sql: ${sum_price}/count(distinct(${user_id}));;
+    sql: ${sum_price}/NULLIF(COUNT(DISTINCT(${user_id})), 0);;
     value_format_name: usd
   }
 
@@ -319,6 +337,16 @@ rendered_value }}</a> ;;
   measure: count {
     type: count
     drill_fields: [detail*]
+  }
+
+  measure: count_user_id {
+    type: number
+    sql: COUNT(DISTINCT(${user_id}));;
+  }
+  # SAME AS
+  measure: count_distinct_users {
+    type: count_distinct
+    sql: ${user_id};;
   }
 
   # ----- Sets of fields for drilling ------

@@ -112,7 +112,6 @@ explore: users {
     relationship: one_to_one
   }
 
-
 }
 
 explore: customer_purchase_behavior{
