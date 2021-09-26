@@ -10,6 +10,11 @@ view: users {
     sql: ${TABLE}."ID" ;;
   }
 
+  dimension: city_and_state {
+    type: string
+    sql: CONCAT(${city}, ' ', ${state});;
+  }
+
   dimension: age {
     type: number
     sql: ${TABLE}."AGE" ;;

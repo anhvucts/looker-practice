@@ -23,6 +23,7 @@ view: order_items {
     sql: ${TABLE}."CREATED_AT" ;;
   }
 
+
 # try formatting
   dimension: created_html {
     type: date
