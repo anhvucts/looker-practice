@@ -94,6 +94,8 @@ view: users {
     sql: ${TABLE}."STATE" ;;
   }
 
+
+
   dimension: traffic_source {
     type: string
     sql: ${TABLE}."TRAFFIC_SOURCE" ;;

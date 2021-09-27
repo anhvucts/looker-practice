@@ -1,6 +1,5 @@
 view: inventory_items {
-  sql_table_name: "PUBLIC"."INVENTORY_ITEMS"
-    ;;
+  sql_table_name: "PUBLIC"."INVENTORY_ITEMS";;
   drill_fields: [id]
 
   dimension: id {

@@ -9,12 +9,9 @@ datagroup: ecommerce_etl {
   max_cache_age: "1 hour"
 }
 
-persist_with: ecommerce_etl
 
-access_grant: state {
-  user_attribute: state
-  allowed_values: ["California", "Arizona"]
-}
+
+persist_with: ecommerce_etl
 
 explore: distribution_centers {}
 
