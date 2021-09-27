@@ -9,10 +9,10 @@ datagroup: ecommerce_etl {
   max_cache_age: "1 hour"
 }
 
-access_grant: state {
-  user_attribute: state
-  allowed_values: ["California", "Arizona"]
-}
+# access_grant: state {
+#   user_attribute: state
+#   allowed_values: ["California", "Arizona"]
+# }
 
 persist_with: ecommerce_etl
 
