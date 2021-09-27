@@ -11,6 +11,11 @@ datagroup: ecommerce_etl {
 
 persist_with: ecommerce_etl
 
+access_grant: state {
+  user_attribute: state
+  allowed_values: ["California", "Arizona"]
+}
+
 explore: distribution_centers {}
 
 explore: etl_jobs {}

@@ -4,7 +4,7 @@ view: order_items {
   drill_fields: [id]
 
   dimension: id {
-    #primary_key: yes
+    primary_key: yes
     type: number
     sql: ${TABLE}."ID" ;;
   }
@@ -51,9 +51,8 @@ view: order_items {
     sql: ${TABLE}."INVENTORY_ITEM_ID" ;;
   }
 
-  dimension: order_id {
+  dimension: order_id { # this could be an orderline ID
     type: number
-    primary_key: yes
     sql: ${TABLE}."ORDER_ID" ;;
   }
 
