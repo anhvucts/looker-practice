@@ -92,9 +92,8 @@ view: users {
   dimension: state {
     type: string
     sql: ${TABLE}."STATE" ;;
+    required_access_grants: [state]
   }
-
-
 
   dimension: traffic_source {
     type: string
