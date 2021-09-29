@@ -1,5 +1,5 @@
 connection: "snowlooker"
-
+label: "Fashion.ly analytics project"
 # include all the views
 include: "/views/**/*.view"
 
