@@ -53,6 +53,14 @@ explore: inventory_items {
 }
 
 explore: order_items {
+  #   always_filter: {
+  #     filters: [status: "Complete"]
+  #   }
+  #   #sql_always_having: ${count_inventory_items} > 5;;
+
+  # conditionally_filter: {
+  #   filters: [created_year: "2 years"]
+  #   unless: [users.id]}
 
   join: inventory_items {
     type: left_outer
@@ -116,7 +124,10 @@ explore: users {
     sql_on: ${users.id} = ${customer_purchase_behavior.user_id} ;;
     relationship: one_to_one
   }
-
+  # conditionally_filter: {
+  #   filters: [users.created_date: "90 days"]
+  #   unless: [users.id, users.state]
+  # }
 }
 
 explore: customer_purchase_behavior{
