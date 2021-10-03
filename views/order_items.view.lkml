@@ -111,8 +111,8 @@ view: order_items {
   dimension_group: bought_after_signup {
     type: duration
     intervals: [day, month, year, hour]
-    sql_start: ${users.created_date} ;;
-    sql_end: ${created_date} ;;
+    sql_start: ${users.created_raw} ;;
+    sql_end: ${created_raw} ;;
   }
 
   # multiple condition filter
