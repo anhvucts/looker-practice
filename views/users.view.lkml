@@ -13,11 +13,13 @@ view: users {
   dimension: city_and_state {
     type: string
     sql: CONCAT(${city}, ' ', ${state});;
+    group_label: "Demographics"
   }
 
   dimension: age {
     type: number
     sql: ${TABLE}."AGE" ;;
+    group_label: "Demographics"
   }
 
   dimension: age_bucket {
@@ -62,6 +64,7 @@ view: users {
   dimension: email {
     type: string
     sql: ${TABLE}."EMAIL" ;;
+    required_access_grants: [exclude_email_address]
   }
 
   dimension: first_name {

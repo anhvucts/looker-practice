@@ -3,7 +3,7 @@ view: order_items {
     ;;
   drill_fields: [id]
 
-  dimension: id {
+  dimension: id { # this is an orderline ID
     primary_key: yes
     type: number
     sql: ${TABLE}."ID" ;;
@@ -51,7 +51,7 @@ view: order_items {
     sql: ${TABLE}."INVENTORY_ITEM_ID" ;;
   }
 
-  dimension: order_id { # this could be an orderline ID
+  dimension: order_id { # this can be considered a transaction ID
     type: number
     sql: ${TABLE}."ORDER_ID" ;;
   }
@@ -110,6 +110,7 @@ view: order_items {
 
   dimension_group: bought_after_signup {
     type: duration
+    intervals: [day, month, year, hour]
     sql_start: ${users.created_date} ;;
     sql_end: ${created_date} ;;
   }
@@ -141,132 +142,138 @@ view: order_items {
     sql: ${sale_price};;
   }
 
+## -- Key use case 0 metrics --
 
 # Total Sale Price Items Sold
   measure: sum_price {
     label: "Total Sale Price"
     # filters: [order_items.status: "Complete"]
     type: sum
-    sql: round(${sale_price});;
+    sql: round(${sale_price}, 1);;
     value_format_name: usd
 }
 
 # Average Sale Price
   measure: avg_sale_price {
-    label: "Average Sale Price Items Sold"
-    # filters: [order_items.status: "Complete"] #
+    label: "Average Sale Price"
     type: average
     sql: ${sale_price};;
     value_format_name: usd
   }
-
+# Cumulative Total Sales
   measure: cumulative_total_sales {
     label: "Cumulative Total Sales"
-    type:  running_total
-    sql: ${sum_price} ;;
-    value_format_name:  usd
-    #direction: "column"
+    type: running_total
+    sql: ${sum_price};;
+    value_format_name: usd
   }
 
 # Total Gross Revenue
 
   measure: total_gross_revenue {
     label: "Total Gross Revenue"
+    description: "Gross revenue excluding cancelled and returned orders"
     type: sum
-    filters: [order_items.status: "-Cancelled, -Returned"]
     sql: ${sale_price};;
+    filters: [status: "-Cancelled, -Returned"]
     value_format_name: usd
   }
 
-# Total orders
-  measure: count_orders {
-    label: "Total orders"
-    type:  count_distinct
-    sql: ${order_id} ;;
+# Total Cost
+
+  measure: total_cost {
+    label: "Total Cost"
+    type: sum
+    sql: ${inventory_items.cost};;
+    value_format_name: usd
   }
 
-  measure: order_count {
-    type: count
+# Avg cost of items sold in inventory
+
+  measure: avg_cost {
+    label: "Average Cost of Items Sold"
+    type: average
+    sql: round(${inventory_items.cost}, 1);;
+    value_format_name: usd
   }
 
 # Total Gross Margin Amount
   measure: total_gross_margin {
     label: "Total Gross Margin Amount"
     type: number
-    sql: ${total_gross_revenue} - ${inventory_items.total_cost};;
+    sql: ${total_gross_revenue} - ${total_cost};;
     value_format_name: usd
   }
 
-# Total unique inventory items
-  measure: count_inventory_items {
-    type: count_distinct
-    sql: ${inventory_item_id} ;;
-  }
-
-# Average Gross Margin -- double check this
+# Average Gross Margin
 
   measure: avg_gross_margin {
     label: "Average Gross Margin"
     type: number
-    sql: ${total_gross_margin}/NULLIF(${count_inventory_items}, 0);;
+    sql: (${total_gross_revenue} - ${total_cost})/NULLIF(${count}, 0);;
     value_format_name: usd
   }
 
-# Gross Margin
+# Gross Margin %
 
   measure: gross_margin_perc {
     label: "Gross Margin Percentage"
     type: number
-    sql: ${total_gross_margin}/NULLIF(${total_gross_revenue},0);;
-    value_format: "0%"
-    drill_fields: [products.category, products.id]
+    sql: ${total_gross_margin}/${total_gross_revenue};;
+    value_format_name: percent_1
   }
 
 # Number of items returned
 
-  measure: total_items_returned {
+  measure: num_returned_items {
     label: "Number of Items Returned"
     type: count_distinct
+    sql: ${id};;
     filters: [status: "Returned"]
-    sql: ${inventory_item_id};;
   }
 
 # Item Return Rate
 
   measure: item_return_rate {
+    label: "Item Return Rate"
     type: number
-    sql: ${total_items_returned}/count(${inventory_item_id});;
-    value_format: "0%"
+    sql: ${num_returned_items}/NULLIF(${count}, 0);;
+    value_format_name: percent_2
   }
+
 # Number of customers who return items
 
-  measure: total_users_return_item {
+  measure: num_customers_return {
+    label: "Number of Customers Returning Items"
     type: count_distinct
-    filters: [status: "Returned"]
     sql: ${user_id} ;;
+    filters: [status: "Returned"]
   }
 
+
 # % users with returns
-  measure: perc_users_return {
-    label: "% users with returns"
+  measure: perc_customers_return {
+    label: "Percentage of users with returning items"
     type: number
-    sql: ${total_users_return_item}/count(distinct(${user_id}));;
-    value_format: "0%"
+    sql: ${num_customers_return}/NULLIF(COUNT(DISTINCT(${user_id})), 0);;
+    value_format_name: percent_2
   }
 
 # Avg spend per customer
   measure: avg_spend_per_customer {
-    label: "Average Spend Per Customer"
+    label: "Average Spend per Customer"
     type: number
     sql: ${sum_price}/NULLIF(COUNT(DISTINCT(${user_id})), 0);;
     value_format_name: usd
   }
 
+## -- end of key use case 0 metrics --
+
 # % unique orders
   measure: perc_orders {
     label: "Percentage orders"
     type: percent_of_total
-    sql: ${count_orders} ;;
+    sql: COUNT(DISTINCT(${order_id})) ;;
   }
 
 # total sales for users with email as traffic source
@@ -333,20 +340,27 @@ rendered_value }}</a> ;;
 </a></p> ;;
   }
 
+# Total orders
+  # measure: count_orders {
+  #   label: "Total orders"
+  #   type:  count_distinct
+  #   sql: ${order_id} ;;
+  # }
+
   measure: count {
     type: count
     drill_fields: [detail*]
   }
 
-  measure: count_user_id {
-    type: number
-    sql: COUNT(DISTINCT(${user_id}));;
-  }
-  # SAME AS
-  measure: count_distinct_users {
-    type: count_distinct
-    sql: ${user_id};;
-  }
+  # measure: count_user_id {
+  #   type: number
+  #   sql: COUNT(DISTINCT(${user_id}));;
+  # }
+  # # SAME AS
+  # measure: count_distinct_users {
+  #   type: count_distinct
+  #   sql: ${user_id};;
+  # }
 
   # ----- Sets of fields for drilling ------
   set: detail {

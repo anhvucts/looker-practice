@@ -22,6 +22,7 @@ view: distribution_centers {
   dimension: name {
     type: string
     sql: ${TABLE}."NAME" ;;
+    #view_label: "Test view label"
   }
 
   measure: count {

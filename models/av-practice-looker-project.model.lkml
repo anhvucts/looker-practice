@@ -14,6 +14,10 @@ datagroup: ecommerce_etl {
 #   allowed_values: ["California", "Arizona"]
 # }
 
+access_grant: exclude_email_address{
+  user_attribute: email # the field email is not accessible to anyone
+}
+
 persist_with: ecommerce_etl
 
 explore: distribution_centers {}
@@ -30,7 +34,7 @@ explore: user_facts {
 }
 
 explore: events {
-   join: users {
+  join: users {
     type: left_outer
     sql_on: ${events.user_id} = ${users.id} ;;
     relationship: many_to_one
@@ -97,14 +101,15 @@ explore: order_items {
     sql_on: ${order_items.id} = ${order_frequency.id} ;;
     relationship: one_to_one
   }
-}
 
+}
 explore: products {
   join: distribution_centers {
     type: left_outer
     sql_on: ${products.distribution_center_id} = ${distribution_centers.id} ;;
     relationship: many_to_one
   }
+  sql_always_where: ${products.category} <> 'Jeans';;
 }
 
 explore: users {
@@ -124,6 +129,12 @@ explore: users {
     sql_on: ${users.id} = ${customer_purchase_behavior.user_id} ;;
     relationship: one_to_one
   }
+
+  # access_filter: {
+  #   user_attribute: email_yahoo_test
+  #   field: users.email
+  # }
+
   # conditionally_filter: {
   #   filters: [users.created_date: "90 days"]
   #   unless: [users.id, users.state]
