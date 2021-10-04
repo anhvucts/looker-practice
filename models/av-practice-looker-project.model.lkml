@@ -6,7 +6,7 @@ include: "/views/**/*.view"
 datagroup: ecommerce_etl {
   ### Datagroups Allow you to sync cache and Persisted Derived Tables to events like ETL
   sql_trigger: SELECT max(completed_at) FROM public.etl_jobs ;;
-  max_cache_age: "1 hour"
+  max_cache_age: "24 hours"
 }
 
 # access_grant: state {
@@ -160,5 +160,21 @@ explore: order_frequency {
     type: left_outer
     sql_on: ${order_frequency.user_id} = ${customer_purchase_behavior.user_id} ;;
     relationship: many_to_one
+  }
+}
+
+explore: user_facts_ndt {
+  join: users {
+    sql_on: ${user_facts_ndt.user_id} = ${users.id} ;;
+    relationship: one_to_one
+    type: left_outer
+  }
+}
+
+explore: inventory_facts {
+  join: inventory_items {
+    sql_on: ${inventory_facts.product_sku} = ${inventory_items.product_sku} ;;
+    relationship: one_to_one
+    type: left_outer
   }
 }

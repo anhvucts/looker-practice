@@ -10,6 +10,7 @@ view: user_order_facts {
           GROUP BY user_id
           LIMIT 10
        ;;
+    datagroup_trigger: ecommerce_etl
   }
 
   dimension: user_id {

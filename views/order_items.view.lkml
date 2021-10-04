@@ -255,7 +255,7 @@ view: order_items {
   measure: perc_customers_return {
     label: "Percentage of users with returning items"
     type: number
-    sql: ${num_customers_return}/NULLIF(COUNT(DISTINCT(${user_id})), 0);;
+    sql: ${num_customers_return}/COUNT(DISTINCT(${user_id}));;
     value_format_name: percent_2
   }
 

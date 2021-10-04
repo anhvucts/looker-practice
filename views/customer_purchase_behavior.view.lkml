@@ -27,6 +27,7 @@ view: customer_purchase_behavior {
       FROM order_items
       GROUP BY user_id
        ;;
+    persist_for: "24 hours"
   }
 
   dimension: user_id {

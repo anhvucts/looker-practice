@@ -14,9 +14,11 @@ view: user_facts {
         sql: rank() over (partition by user_id order by sum_price) ;;
       }
     }
+    persist_for: "24 hours"
   }
   dimension: order_id {
     type: number
+    sql: ${TABLE}."ORDER_ID" ;;
   }
   dimension: user_id {
     type: number
