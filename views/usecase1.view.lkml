@@ -33,6 +33,7 @@ view: usecase1 {
   dimension: customer_lifetime_revenue {
     type: tier
     tiers: [5, 20, 50, 100, 500, 1000]
+    sql: ${total_lifetime_value} ;;
     style: integer
     value_format_name: usd
   }
@@ -40,11 +41,16 @@ view: usecase1 {
     type: number
     value_format_name: usd
   }
-  dimension: first_order_date {
-    type: date
+  dimension_group: first_order {
+    type: time
+    timeframes: [date, month, year]
+    sql: ${TABLE}."FIRST_ORDER_DATE" ;;
   }
-  dimension: last_order_date {
-    type: date
+
+  dimension_group: last_order{
+    type: time
+    timeframes: [date, month, year]
+    sql: ${TABLE}."LAST_ORDER_DATE" ;;
   }
 
   dimension_group: since_latest_order {
