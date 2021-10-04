@@ -3,10 +3,10 @@ view: revenue_brand_ndt {
     explore_source: order_items {
       column: sale_price {}
       column: inventory_item_id {}
+    filters: [order_items.created_date: "365 days"]
     }
-    #persist_for: "30 minutes"
+    datagroup_trigger: ecommerce_etl
   }
-
   dimension: sale_price {
     type: number
   }
