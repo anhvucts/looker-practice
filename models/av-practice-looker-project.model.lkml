@@ -179,6 +179,7 @@ explore: inventory_facts {
   }
 }
 
+explore: usecase1 {}
 explore: revenue_brand_ndt {
   join: inventory_items {
     sql_on: ${revenue_brand_ndt.inventory_item_id} = ${inventory_items.id} ;;

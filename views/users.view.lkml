@@ -163,6 +163,7 @@ view: users {
     sql: ${months_since_signup} ;;
   }
 
+
   measure: count {
     type: count
     drill_fields: [users.id, users.last_name, users.first_name, events.count, order_items.count]
