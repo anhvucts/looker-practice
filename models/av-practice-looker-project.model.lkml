@@ -178,3 +178,12 @@ explore: inventory_facts {
     type: left_outer
   }
 }
+
+explore: revenue_brand_ndt {
+  join: inventory_items {
+    sql_on: ${revenue_brand_ndt.inventory_item_id} = ${inventory_items.id} ;;
+    relationship: one_to_one
+    type: left_outer
+  }
+  fields: [inventory_items.product_brand, total_revenue, sale_price]
+}
