@@ -10,7 +10,7 @@ view: etl_jobs {
   }
 
   dimension_group: completed {
-    description: "abcd"
+    label: "some description"
     type: time
     timeframes: [
       raw,
