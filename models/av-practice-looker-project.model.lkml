@@ -22,7 +22,9 @@ persist_with: ecommerce_etl
 
 explore: distribution_centers {}
 
-explore: etl_jobs {}
+explore: etl_jobs {
+  hidden: yes
+}
 
 explore: user_facts {
   # join: users {
