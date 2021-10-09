@@ -1,12 +1,13 @@
 view: order_items {
-  sql_table_name: "PUBLIC"."ORDER_ITEMS"
-    ;;
+  sql_table_name: "PUBLIC"."ORDER_ITEMS";;
   drill_fields: [id]
 
   dimension: id { # this is an orderline ID
     primary_key: yes
+    alias: [orderline_id]
     type: number
     sql: ${TABLE}."ID" ;;
+    group_label: "Identifiers"
   }
 
   dimension_group: created {
@@ -21,14 +22,28 @@ view: order_items {
       year
     ]
     sql: ${TABLE}."CREATED_AT" ;;
+    group_label: "Orders"
   }
 
+  # dimension_group: order_created {
+  #   type: time
+  #   timeframes: [raw, date, month, year, month_name, day_of_week]
+  #   sql: ${TABLE}."CREATED_AT";;
+  # }
+
+  # dimension_group: days_from_signup {
+  #   type: duration
+  #   intervals: [day, hour, week, month]
+  #   sql_start: ${users.created_date};;
+  #   sql_end: CURRENT_DATE();;
+  # }
 
 # try formatting
   dimension: created_html {
     type: date
     sql: ${created_date} ;;
     html: {{rendered_value | date: "%B %e, %Y"}} ;;
+    hidden: yes
   }
 
   dimension_group: delivered {
@@ -43,17 +58,20 @@ view: order_items {
       year
     ]
     sql: ${TABLE}."DELIVERED_AT" ;;
+    group_label: "Delivery"
   }
 
   dimension: inventory_item_id {
     type: number
     # hidden: yes
     sql: ${TABLE}."INVENTORY_ITEM_ID" ;;
+    group_label: "Identifiers"
   }
 
   dimension: order_id { # this can be considered a transaction ID
     type: number
     sql: ${TABLE}."ORDER_ID" ;;
+    group_label: "Identifiers"
   }
 
   dimension_group: returned {
@@ -68,11 +86,13 @@ view: order_items {
       year
     ]
     sql: ${TABLE}."RETURNED_AT" ;;
+    group_label: "Delivery"
   }
 
   dimension: sale_price {
     type: number
     sql: ${TABLE}."SALE_PRICE" ;;
+    group_label: "Orders"
   }
 
   dimension_group: shipped {
@@ -87,17 +107,20 @@ view: order_items {
       year
     ]
     sql: ${TABLE}."SHIPPED_AT" ;;
+    group_label: "Delivery"
   }
 
   dimension: status {
     type: string
     sql: ${TABLE}."STATUS" ;;
+    group_label: "Orders"
   }
 
   dimension: user_id {
     type: number
     # hidden: yes
     sql: ${TABLE}."USER_ID" ;;
+    group_label: "Identifiers"
   }
 
   dimension: shipping_days {
@@ -269,6 +292,45 @@ view: order_items {
 
 ## -- end of key use case 0 metrics --
 
+
+## -- key use case 2 --
+
+dimension: days_since_signup {
+  type: duration_day
+  label: "Days Since Signup"
+  sql_start: ${users.created_date} ;;
+  sql_end: ${created_date} ;;
+}
+
+dimension: months_since_signup {
+  type: duration_month
+  label: "Months Since Signup"
+  sql_start: ${users.created_date} ;;
+  sql_end: ${created_date} ;;
+}
+
+measure: avg_days_since_signup {
+  type: average
+  label: "Average Days Since Signup"
+  sql: ${days_since_signup} ;;
+}
+
+measure: avg_months_since_signup {
+  type: average
+  label: "Average Months Since Signup"
+  sql: ${months_since_signup} ;;
+}
+
+# cohort 7, 14, 28, 90 and 180
+
+dimension: customer_cohort {
+  type: tier
+  tiers: [7, 14, 28, 90, 180, 360]
+  sql: ${days_since_signup} ;;
+  style: integer
+}
+
+
 # % unique orders
   measure: perc_orders {
     label: "Percentage orders"
@@ -352,15 +414,17 @@ rendered_value }}</a> ;;
     drill_fields: [detail*]
   }
 
+
   # measure: count_user_id {
   #   type: number
   #   sql: COUNT(DISTINCT(${user_id}));;
   # }
   # # SAME AS
-  # measure: count_distinct_users {
-  #   type: count_distinct
-  #   sql: ${user_id};;
-  # }
+  measure: count_distinct_users {
+    type: count_distinct
+    sql: ${user_id};;
+  }
+
 
   # ----- Sets of fields for drilling ------
   set: detail {
