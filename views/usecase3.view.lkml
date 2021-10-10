@@ -16,6 +16,7 @@ view: usecase3 {
   dimension: order_id {
     type: number
     sql: ${TABLE}."ORDER_ID" ;;
+    primary_key: yes
   }
 
   dimension: user_id {
@@ -64,6 +65,7 @@ view: usecase3 {
   measure: count_distinct_users {
     type: count_distinct
     sql: ${user_id} ;;
+    hidden: yes
   }
 
   measure: rcr_60 {
