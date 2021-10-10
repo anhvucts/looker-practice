@@ -2,7 +2,6 @@ view: distribution_centers {
   sql_table_name: "PUBLIC"."DISTRIBUTION_CENTERS"
     ;;
   drill_fields: [id]
-
   dimension: id {
     primary_key: yes
     type: number

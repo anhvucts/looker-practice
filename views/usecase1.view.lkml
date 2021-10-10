@@ -20,15 +20,20 @@ view: usecase1 {
   }
 
   dimension: user_id {
+    label: "User ID"
     primary_key: yes
     type: number
     sql: ${TABLE}."USER_ID" ;;
   }
   dimension: total_lifetime_orders {
     type: number
+    group_label: "Customer Lifetime Metrics"
+
   }
   dimension: customer_lifetime_orders {
     type: string
+    group_label: "Customer Lifetime Metrics"
+
   }
   dimension: customer_lifetime_revenue {
     type: tier
@@ -36,10 +41,14 @@ view: usecase1 {
     sql: ${total_lifetime_value} ;;
     style: integer
     value_format_name: usd
+    group_label: "Customer Lifetime Metrics"
+
   }
   dimension: total_lifetime_value {
     type: number
     value_format_name: usd
+    group_label: "Customer Lifetime Metrics"
+
   }
   dimension_group: first_order {
     type: time
@@ -63,6 +72,7 @@ view: usecase1 {
   dimension: is_active_customer {
     type: yesno
     sql: ${days_since_latest_order} <= 90;;
+    group_label: "Customer Lifetime Metrics"
   }
 
   dimension: is_repeating_customer {
@@ -73,15 +83,18 @@ view: usecase1 {
   measure: avg_lifetime_orders {
     type: average
     sql: ${total_lifetime_orders};;
+    group_label: "Customer Lifetime Metrics"
   }
   measure: avg_lifetime_revenue {
     type: average
     sql: ${total_lifetime_value};;
+    group_label: "Customer Lifetime Metrics"
   }
 
   measure: avg_days_since_latest_order {
     type: average
     sql: ${days_since_latest_order};;
+    group_label: "Customer Lifetime Metrics"
   }
 
   measure: count {

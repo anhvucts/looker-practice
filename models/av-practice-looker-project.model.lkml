@@ -6,13 +6,17 @@ include: "/views/**/*.view"
 datagroup: ecommerce_etl {
   ### Datagroups Allow you to sync cache and Persisted Derived Tables to events like ETL
   sql_trigger: SELECT max(completed_at) FROM public.etl_jobs ;;
-  max_cache_age: "24 hours"
+  max_cache_age: "12 hours"
 }
 
 # access_grant: state {
 #   user_attribute: state
 #   allowed_values: ["California", "Arizona"]
 # }
+
+access_grant: exclude_yahoo_email {
+  user_attribute: email_yahoo_test
+}
 
 access_grant: exclude_email_address{
   user_attribute: email # the field email is not accessible to anyone
@@ -66,45 +70,60 @@ explore: order_items {
 
   # conditionally_filter: {
   #   filters: [created_year: "2 years"]
-  #   unless: [users.id]}
-
+  #   unless: [users.id]
+  #}
+  view_label: "Cohort Analysis"
   join: inventory_items {
     type: left_outer
     sql_on: ${order_items.inventory_item_id} = ${inventory_items.id} ;;
     relationship: many_to_one
+    view_label: "Others"
   }
 
   join: users {
     type: left_outer
     sql_on: ${order_items.user_id} = ${users.id} ;;
     relationship: many_to_one
+    view_label: "Others"
   }
 
   join: products {
     type: left_outer
     sql_on: ${inventory_items.product_id} = ${products.id} ;;
     relationship: many_to_one
+    view_label: "Others"
   }
 
   join: distribution_centers {
     type: left_outer
     sql_on: ${products.distribution_center_id} = ${distribution_centers.id} ;;
     relationship: many_to_one
+    view_label: "Others"
   }
 
   join: user_order_facts {
     type: left_outer
     sql_on: ${users.id} = ${user_order_facts.user_id} ;;
     relationship: one_to_one
+    view_label: "Others"
   }
 
   join: order_frequency {
     type: left_outer
     sql_on: ${order_items.id} = ${order_frequency.id} ;;
     relationship: one_to_one
+    view_label: "Others"
   }
 
-}
+  join: usecase1 {
+    type: left_outer
+    sql_on: ${user_id} = ${usecase1.user_id} ;;
+    relationship: many_to_one
+    view_label: "Cohort Analysis"
+  }
+  fields: [ALL_FIELDS*, -order_items.created_html, -users.id]}
+
+
 explore: products {
   join: distribution_centers {
     type: left_outer
@@ -141,6 +160,8 @@ explore: users {
   #   filters: [users.created_date: "90 days"]
   #   unless: [users.id, users.state]
   # }
+
+
 }
 
 explore: customer_purchase_behavior{
@@ -181,7 +202,6 @@ explore: inventory_facts {
   }
 }
 
-explore: usecase1 {}
 explore: revenue_brand_ndt {
   join: inventory_items {
     sql_on: ${revenue_brand_ndt.inventory_item_id} = ${inventory_items.id} ;;
@@ -189,4 +209,8 @@ explore: revenue_brand_ndt {
     type: left_outer
   }
   #fields: [inventory_items.product_brand, total_revenue, sale_price]
+}
+
+explore: usecase3 {
+  view_label: "Customer Behaviors"
 }
