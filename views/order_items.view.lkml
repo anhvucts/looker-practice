@@ -426,6 +426,7 @@ rendered_value }}</a> ;;
   }
 
 
+
   # ----- Sets of fields for drilling ------
   set: detail {
     fields: [

@@ -32,6 +32,7 @@ view: order_frequency {
     type: number
     sql: ${TABLE}."ID" ;;
     primary_key: yes
+    view_label: "Identifiers"
   }
 
   dimension_group: created_at {

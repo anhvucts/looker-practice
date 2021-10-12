@@ -8,6 +8,7 @@ view: users {
     primary_key: yes
     type: number
     sql: ${TABLE}."ID" ;;
+    group_label: "Identifiers"
   }
 
   dimension: city_and_state {
@@ -64,7 +65,7 @@ view: users {
   dimension: email {
     type: string
     sql: ${TABLE}."EMAIL" ;;
-    required_access_grants: [exclude_yahoo_email]
+    #required_access_grants: [exclude_yahoo_email]
   }
 
   dimension: first_name {
@@ -95,7 +96,7 @@ view: users {
   dimension: state {
     type: string
     sql: ${TABLE}."STATE" ;;
-    #required_access_grants: [state]
+    # required_access_grants: [state]
   }
 
   dimension: traffic_source {

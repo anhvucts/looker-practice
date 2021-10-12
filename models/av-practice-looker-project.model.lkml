@@ -2,6 +2,7 @@ connection: "snowlooker"
 label: "Fashion.ly analytics project"
 # include all the views
 include: "/views/**/*.view"
+week_start_day: monday
 
 datagroup: ecommerce_etl {
   ### Datagroups Allow you to sync cache and Persisted Derived Tables to events like ETL
@@ -14,13 +15,13 @@ datagroup: ecommerce_etl {
 #   allowed_values: ["California", "Arizona"]
 # }
 
-access_grant: exclude_yahoo_email {
-  user_attribute: email_yahoo_test
-}
+# access_grant: exclude_yahoo_email {
+#   user_attribute: email_yahoo_test
+# }
 
-access_grant: exclude_email_address{
-  user_attribute: email # the field email is not accessible to anyone
-}
+# access_grant: exclude_email_address{
+#   user_attribute: email # the field email is not accessible to anyone
+# }
 
 persist_with: ecommerce_etl
 
@@ -45,6 +46,7 @@ explore: events {
     sql_on: ${events.user_id} = ${users.id} ;;
     relationship: many_to_one
   }
+   # this puts the explore in a different field in Explore dropdown menu
 }
 
 explore: inventory_items {
@@ -77,7 +79,7 @@ explore: order_items {
     type: left_outer
     sql_on: ${order_items.inventory_item_id} = ${inventory_items.id} ;;
     relationship: many_to_one
-    view_label: "Others"
+    view_label: "Others" # this also groups explores in one heading but not in the drop down menu
   }
 
   join: users {
@@ -184,6 +186,8 @@ explore: order_frequency {
     sql_on: ${order_frequency.user_id} = ${customer_purchase_behavior.user_id} ;;
     relationship: many_to_one
   }
+
+
 }
 
 explore: user_facts_ndt {
@@ -211,6 +215,6 @@ explore: revenue_brand_ndt {
   #fields: [inventory_items.product_brand, total_revenue, sale_price]
 }
 
-explore: usecase3 {
-  view_label: "Customer Behaviors"
-}
+# explore: usecase3 {
+
+# }
