@@ -25,7 +25,11 @@ datagroup: ecommerce_etl {
 
 persist_with: ecommerce_etl
 
-explore: distribution_centers {}
+# explore: customer_facts {}
+
+explore: distribution_centers {
+  hidden: yes
+}
 
 explore: etl_jobs {
   hidden: yes
@@ -74,7 +78,7 @@ explore: order_items {
   #   filters: [created_year: "2 years"]
   #   unless: [users.id]
   #}
-  view_label: "Cohort Analysis"
+  view_label: "@{industry} Cohort Analysis"
   join: inventory_items {
     type: left_outer
     sql_on: ${order_items.inventory_item_id} = ${inventory_items.id} ;;
@@ -121,7 +125,7 @@ explore: order_items {
     type: left_outer
     sql_on: ${user_id} = ${usecase1.user_id} ;;
     relationship: many_to_one
-    view_label: "Cohort Analysis"
+    view_label: "@{industry} Cohort Analysis"
   }
   fields: [ALL_FIELDS*, -order_items.created_html, -users.id]}
 

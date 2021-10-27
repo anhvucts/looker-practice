@@ -2,6 +2,25 @@ view: inventory_items {
   sql_table_name: "PUBLIC"."INVENTORY_ITEMS";;
   drill_fields: [id]
 
+
+  parameter: item_to_add_up {
+    type: unquoted
+    allowed_value: {
+      label: "Total Sale Price"
+      value: "product_retail_price"
+    }
+    allowed_value: {
+      label: "Total Cost"
+      value: "cost"
+    }
+  }
+
+  measure: dynamic_sum {
+    type: sum
+    sql: ${TABLE}.{% parameter item_to_add_up %} ;;
+    value_format_name: usd
+  }
+
   dimension: id {
     primary_key: yes
     type: number
@@ -95,6 +114,8 @@ view: inventory_items {
     sql: ${cost};;
     value_format_name: usd
   }
+
+
 
 # Average cost
   measure: avg_cost {

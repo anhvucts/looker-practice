@@ -29,6 +29,8 @@ view: products {
     }
   }
 
+
+
   dimension: cost {
     type: number
     sql: ${TABLE}."COST" ;;

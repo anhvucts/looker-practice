@@ -2,6 +2,43 @@ view: order_items {
   sql_table_name: "PUBLIC"."ORDER_ITEMS";;
   drill_fields: [id]
 
+## --- PARAMETERS --- ##
+
+parameter: metric_selector {
+  type: string
+  allowed_value: {
+    label: "Total profit"
+    value: "total_profit_html"
+  }
+
+  allowed_value: {
+    label: "Gross Margin Percentage"
+    value: "gross_margin_perc"
+  }
+
+  allowed_value: {
+    label: "Average Spend per Customer"
+    value: "avg_spend_per_customer"
+  }
+}
+
+measure: metric {
+  label_from_parameter: metric_selector
+  type: number
+  sql:
+    CASE
+      WHEN {% parameter metric_selector %} = 'total_profit_html' THEN ${total_profit_html}
+      WHEN {% parameter metric_selector %} = 'gross_margin_perc' THEN ${gross_margin_perc}
+      WHEN {% parameter metric_selector %} = 'avg_spend_per_customer' THEN ${avg_spend_per_customer}
+      ELSE NULL
+    END
+  ;;
+}
+
+
+
+
+## -- DIMENSIONS AND MEASURES --- ##
   dimension: id { # this is an orderline ID
     primary_key: yes
     alias: [orderline_id]
@@ -130,12 +167,28 @@ view: order_items {
   }
 
   # Days between signup and all purchases
-
   dimension_group: bought_after_signup {
     type: duration
     intervals: [day, month, year, hour]
     sql_start: ${users.created_raw} ;;
     sql_end: ${created_raw} ;;
+  }
+
+  # test dynamic count measure
+  filter: category_count_picker {
+    type: string
+    suggest_explore: products
+    suggest_dimension: products.category
+  }
+
+  measure: category_count {
+    type: sum
+    sql:
+      CASE
+        WHEN {% condition category_count_picker %} ${products.category} {% endcondition %} THEN 1
+        ELSE 0
+      END
+    ;;
   }
 
   # multiple condition filter
@@ -425,7 +478,24 @@ rendered_value }}</a> ;;
     sql: ${user_id};;
   }
 
+  # total profit
 
+  measure: total_profit_html {
+    hidden: yes
+    type: number
+    sql: ${total_gross_revenue} - ${total_cost} ;;
+    value_format_name: usd
+    html: {% if  products.category._in_query and value >= 75000 %}
+    <font color = "green" > {{rendered_value}} </font>
+    {% elsif  products.category._in_query and value >= 50000 and value < 75000 %}
+    <font color = "yellow" > {{rendered_value}} </font>
+    {% elsif products.category._in_query %}
+    <font color = "red" > {{rendered_value}} </font>
+    {%else%}
+      {{rendered_value}}
+    {%endif%}
+    ;;
+  }
 
   # ----- Sets of fields for drilling ------
   set: detail {
