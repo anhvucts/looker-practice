@@ -65,7 +65,7 @@ view: users {
   dimension: email {
     type: string
     sql: ${TABLE}."EMAIL" ;;
-    #required_access_grants: [exclude_yahoo_email]
+    required_access_grants: [exclude_email_address]
   }
 
   dimension: first_name {
