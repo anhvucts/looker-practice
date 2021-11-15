@@ -15,9 +15,9 @@ datagroup: ecommerce_etl {
 #   allowed_values: ["California", "Arizona"]
 # }
 
-# access_grant: exclude_yahoo_email {
-#   user_attribute: email_yahoo_test
-# }
+access_grant: exclude_yahoo_email {
+  user_attribute: email_yahoo_test
+}
 
 # access_grant: exclude_email_address{
 #   user_attribute: email # the field email is not accessible to anyone
@@ -136,7 +136,7 @@ explore: products {
     sql_on: ${products.distribution_center_id} = ${distribution_centers.id} ;;
     relationship: many_to_one
   }
-  sql_always_where: ${products.category} <> 'Jeans';;
+  ## sql_always_where: ${products.category} <> 'Jeans';;
 }
 
 explore: users {
@@ -157,10 +157,10 @@ explore: users {
     relationship: one_to_one
   }
 
-  # access_filter: {
-  #   user_attribute: email_yahoo_test
-  #   field: users.email
-  # }
+  access_filter: {
+    user_attribute: email_yahoo_test
+    field: users.email
+  }
 
   # conditionally_filter: {
   #   filters: [users.created_date: "90 days"]

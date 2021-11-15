@@ -192,10 +192,10 @@ measure: metric {
   }
 
   # multiple condition filter
-  measure: status_cancelled_ocean_avenue {
-    type: count
-    filters: [status: "-Cancelled"]
-  }
+  # measure: status_cancelled_ocean_avenue {
+  #   type: count
+  #   filters: [status: "-Cancelled"]
+  # }
 
   measure: min_shipping_days {
     type: min
