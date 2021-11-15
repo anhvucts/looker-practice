@@ -19,9 +19,9 @@ datagroup: ecommerce_etl {
 #   user_attribute: email_yahoo_test
 # }
 
-# access_grant: exclude_email_address{
-#   user_attribute: email # the field email is not accessible to anyone
-# }
+access_grant: exclude_email_address{
+  user_attribute: email # the field email is not accessible to anyone
+}
 
 persist_with: ecommerce_etl
 
