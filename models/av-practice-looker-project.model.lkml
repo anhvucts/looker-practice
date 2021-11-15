@@ -15,9 +15,9 @@ datagroup: ecommerce_etl {
 #   allowed_values: ["California", "Arizona"]
 # }
 
-access_grant: exclude_yahoo_email {
-  user_attribute: email_yahoo_test
-}
+# access_grant: exclude_yahoo_email {
+#   user_attribute: email_yahoo_test
+# }
 
 # access_grant: exclude_email_address{
 #   user_attribute: email # the field email is not accessible to anyone
