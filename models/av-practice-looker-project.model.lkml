@@ -162,7 +162,6 @@ explore: users {
     field: users.email
   }
 
-  required_access_grants: [exclude_email_address]
 
   # conditionally_filter: {
   #   filters: [users.created_date: "90 days"]
