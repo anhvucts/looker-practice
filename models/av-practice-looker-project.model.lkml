@@ -78,6 +78,7 @@ explore: order_items {
   #   filters: [created_year: "2 years"]
   #   unless: [users.id]
   #}
+
   view_label: "@{industry} Cohort Analysis"
   join: inventory_items {
     type: left_outer
@@ -157,10 +158,10 @@ explore: users {
     relationship: one_to_one
   }
 
-  access_filter: {
-    user_attribute: email_yahoo_test
-    field: users.email
-  }
+  # access_filter: {
+  #   user_attribute: email_yahoo_test
+  #   field: users.email
+  # }
 
 
   # conditionally_filter: {

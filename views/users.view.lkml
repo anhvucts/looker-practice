@@ -83,6 +83,12 @@ view: users {
     sql: ${TABLE}."LAST_NAME" ;;
   }
 
+  dimension: first_last_name {
+    type: string
+    sql: CONCAT(${first_name}, ' ' , ${last_name}) ;;
+  }
+
+
   dimension: latitude {
     type: number
     sql: ${TABLE}."LATITUDE" ;;
@@ -164,6 +170,10 @@ view: users {
     sql: ${months_since_signup} ;;
   }
 
+  measure: max_days_from_signup {
+    type: max
+    sql: ${days_since_signup} ;;
+  }
 
   measure: count {
     type: count

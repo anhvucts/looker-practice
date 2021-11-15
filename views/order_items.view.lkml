@@ -47,6 +47,11 @@ measure: metric {
     group_label: "Identifiers"
   }
 
+  measure: count_distinct_users {
+    type: count_distinct
+    sql: ${user_id} ;;
+  }
+
   dimension_group: created {
     type: time
     timeframes: [
@@ -473,10 +478,10 @@ rendered_value }}</a> ;;
   #   sql: COUNT(DISTINCT(${user_id}));;
   # }
   # # SAME AS
-  measure: count_distinct_users {
-    type: count_distinct
-    sql: ${user_id};;
-  }
+  # measure: count_distinct_users {
+  #   type: count_distinct
+  #   sql: ${user_id};;
+  # }
 
   # total profit
 
