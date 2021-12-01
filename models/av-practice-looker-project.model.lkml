@@ -19,9 +19,9 @@ datagroup: ecommerce_etl {
 #   user_attribute: email_yahoo_test
 # }
 
-access_grant: exclude_email_address{
-  user_attribute: email # the field email is not accessible to anyone
-}
+# access_grant: exclude_email_address{
+#   user_attribute: email # the field email is not accessible to anyone
+# }
 
 persist_with: ecommerce_etl
 
@@ -50,7 +50,7 @@ explore: events {
     sql_on: ${events.user_id} = ${users.id} ;;
     relationship: many_to_one
   }
-   # this puts the explore in a different field in Explore dropdown menu
+  # this puts the explore in a different field in Explore dropdown menu
 }
 
 explore: inventory_items {
@@ -128,8 +128,8 @@ explore: order_items {
     relationship: many_to_one
     view_label: "@{industry} Cohort Analysis"
   }
-  fields: [ALL_FIELDS*, -order_items.created_html, -users.id]}
-
+  #fields: [ALL_FIELDS*, -order_items.created_html, -users.id]
+  }
 
 explore: products {
   join: distribution_centers {
@@ -161,12 +161,6 @@ explore: users {
   # access_filter: {
   #   user_attribute: email_yahoo_test
   #   field: users.email
-  # }
-
-
-  # conditionally_filter: {
-  #   filters: [users.created_date: "90 days"]
-  #   unless: [users.id, users.state]
   # }
 
 
@@ -224,3 +218,34 @@ explore: revenue_brand_ndt {
 # explore: usecase3 {
 
 # }
+
+# test dynamic join paths
+explore: events_3 {
+  view_name: events
+  join: events_join_path {
+    fields: []
+    type: left_outer
+    relationship: one_to_one
+    sql_on: 0=1
+      {% if order_items._in_query %} OR ${events_join_path.path} = 'order_items' {% endif %}
+    ;;
+  }
+  join: order_items {
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${events_join_path.path} = 'order_items' and ${events.user_id} = ${order_items.user_id} ;;
+    fields: [-order_items.total_cost, -order_items.category_count, -order_items.avg_cost, -order_items.total_profit_example]
+  }
+
+  # exclude derived fields that refer to another view not being joined in this explore
+  #fields: [-order_items.total_cost, -order_items.category_count, -order_items.avg_cost, -order_items.total_profit_example]
+}
+
+view: events_join_path {
+  derived_table: {
+    sql:
+      SELECT 'order_items' AS path
+      ;;
+  }
+  dimension: path {}
+}

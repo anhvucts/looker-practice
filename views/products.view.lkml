@@ -15,7 +15,7 @@ view: products {
     drill_fields: [category, id]
     link: {
       label: "{{value}} performance breakdown dashboard"
-      url: "https://ctspartner.de.looker.com/dashboards-next/42?Brand={{ value | url_encode}}"
+      url: "/dashboards/42?Brand={{ value | url_encode}}"
     } # liquidation on filtered URLs
   }
 

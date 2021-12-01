@@ -35,8 +35,69 @@ measure: metric {
   ;;
 }
 
+# create comparison time templated filters
 
+filter: timeframe_1 {
+  type: date_time
+}
 
+filter: timeframe_2 {
+  type: date_time
+}
+
+dimension: timeframe_1_only {
+  type: yesno
+  sql: {% condition timeframe_1 %} ${created_raw} {% endcondition %} ;;
+}
+
+dimension: timeframe_2_only {
+  type: yesno
+  sql: {% condition timeframe_2 %} ${created_raw} {% endcondition %} ;;
+}
+
+dimension: timeframe_1_or_2 {
+  type: string
+  sql: CASE WHEN ${timeframe_1_only} THEN 'First Period' ELSE 'Second Period' END
+  ;;
+}
+
+# Cohort picker
+
+parameter: cohort_picker {
+  label: "Choose your cohort"
+  allowed_value: {
+    label: "Age groups"
+    value: "age_bucket"
+  }
+  allowed_value: {
+    label: "Country"
+    value: "country"
+  }
+  allowed_value: {
+    label: "City"
+    value: "city"
+  }
+}
+
+  dimension: cohort {
+    description: "Use in conjuction with the Cohort Picker"
+    type: string
+    sql: ${TABLE}.cohort;;
+    label_from_parameter: cohort_picker
+  }
+
+  measure: metrics_for_cohorts {
+    type: number
+    sql:
+    CASE
+      WHEN {% parameter metric_selector %} = 'Total profit' THEN ${total_profit_html}
+      WHEN {% parameter metric_selector %} = 'Gross Margin Percentage' THEN ${gross_margin_perc}
+      WHEN {% parameter metric_selector %} = 'Average Spend per Customer' THEN ${avg_spend_per_customer}
+    ELSE NULL
+    END
+    ;;
+    label_from_parameter: metric_selector
+  }
 
 ## -- DIMENSIONS AND MEASURES --- ##
   dimension: id { # this is an orderline ID
@@ -79,6 +140,16 @@ measure: metric {
   #   sql_start: ${users.created_date};;
   #   sql_end: CURRENT_DATE();;
   # }
+
+  dimension: created_yr {
+    hidden: yes
+    type: date_year
+    sql: ${created_raw} ;;
+    link: {
+      label: "Monthly performance"
+      url: "/looks/21?&f[created_year]={{ _filters['order_items.created_year'] | url_encode }}"
+      }
+  }
 
 # try formatting
   dimension: created_html {
