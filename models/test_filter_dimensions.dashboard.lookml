@@ -165,5 +165,5 @@
       - max: 100
     model: av-practice-looker-project
     explore: users
-    listens_to_filters: [Num Generator]
+    listens_to_filters: []
     field: users.num_generator
