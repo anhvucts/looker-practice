@@ -4,6 +4,8 @@ view: events {
   sql_table_name: "PUBLIC"."EVENTS";;
   drill_fields: [id]
 
+
+
   dimension: id {
     primary_key: yes
     type: number

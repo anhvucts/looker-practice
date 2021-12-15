@@ -2,6 +2,7 @@ connection: "snowlooker"
 label: "Fashion.ly analytics project"
 # include all the views
 include: "/views/**/*.view"
+include: "*.dashboard"
 week_start_day: monday
 
 datagroup: ecommerce_etl {
@@ -137,6 +138,7 @@ explore: products {
     sql_on: ${products.distribution_center_id} = ${distribution_centers.id} ;;
     relationship: many_to_one
   }
+
   ## sql_always_where: ${products.category} <> 'Jeans';;
 }
 
@@ -157,6 +159,7 @@ explore: users {
     sql_on: ${users.id} = ${customer_purchase_behavior.user_id} ;;
     relationship: one_to_one
   }
+
 
   # access_filter: {
   #   user_attribute: email_yahoo_test

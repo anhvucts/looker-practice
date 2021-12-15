@@ -16,7 +16,19 @@ view: products {
     link: {
       label: "{{value}} performance breakdown dashboard"
       url: "/dashboards/42?Brand={{ value | url_encode}}"
-    } # liquidation on filtered URLs
+  }
+}
+
+
+
+  dimension: br {
+    type: string
+    sql: ${TABLE}."BRAND" ;;
+    drill_fields: [users.state, users.gender]
+    link: {
+      label: "{{value}} sales breakdown"
+      url: "/dashboards/65?Br={{ _filters['products.br'] | url_encode }}"
+    }
   }
 
   dimension: category {
@@ -64,6 +76,7 @@ view: products {
 
   measure: count {
     type: count
-    drill_fields: [id, name, distribution_centers.name, distribution_centers.id, inventory_items.count]
+    drill_fields: [id, order_items.created_date, users.state, name, distribution_centers.name, distribution_centers.id, inventory_items.count]
   }
+
 }

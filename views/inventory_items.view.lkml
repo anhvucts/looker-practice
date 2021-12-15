@@ -46,10 +46,7 @@ view: inventory_items {
     sql: ${TABLE}."CREATED_AT" ;;
   }
 
-  dimension: product_brand {
-    type: string
-    sql: ${TABLE}."PRODUCT_BRAND" ;;
-  }
+
 
   dimension: product_category {
     type: string

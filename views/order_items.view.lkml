@@ -99,6 +99,30 @@ parameter: cohort_picker {
     label_from_parameter: metric_selector
   }
 
+
+## brand filer
+  dimension: state {
+    type: string
+    sql: ${users.state} ;;
+  }
+  dimension: gender {
+    type: string
+    sql: ${users.gender} ;;
+  }
+
+  dimension: brand {
+    type: string
+    sql: ${products.brand} ;;
+    drill_fields: [state, gender]
+    link: {
+      label: "Drill down"
+      url: "/dashboards/65?State={{ _filters['state'] | url_encode }}
+      &Gender={{ _filters['gender'] | url_encode}} & {{value}} | url_encode}}"
+    }
+}
+
+
+
 ## -- DIMENSIONS AND MEASURES --- ##
   dimension: id { # this is an orderline ID
     primary_key: yes
@@ -122,7 +146,8 @@ parameter: cohort_picker {
       week,
       month,
       quarter,
-      year
+      year,
+      month_name
     ]
     sql: ${TABLE}."CREATED_AT" ;;
     group_label: "Orders"
@@ -141,15 +166,6 @@ parameter: cohort_picker {
   #   sql_end: CURRENT_DATE();;
   # }
 
-  dimension: created_yr {
-    hidden: yes
-    type: date_year
-    sql: ${created_raw} ;;
-    link: {
-      label: "Monthly performance"
-      url: "/looks/21?&f[created_year]={{ _filters['order_items.created_year'] | url_encode }}"
-      }
-  }
 
 # try formatting
   dimension: created_html {
@@ -217,7 +233,8 @@ parameter: cohort_picker {
       week,
       month,
       quarter,
-      year
+      year,
+      month_name
     ]
     sql: ${TABLE}."SHIPPED_AT" ;;
     group_label: "Delivery"
@@ -303,6 +320,14 @@ parameter: cohort_picker {
     type: sum
     sql: round(${sale_price}, 1);;
     value_format_name: usd
+    drill_fields: [created_month, sum_price]
+    link: {
+      label: "Drill down to month"
+      url: "
+      {% assign vis_config = '{\"x_axis_datetime_label\":\"%B %Y\",\"type\": \"looker_column\"}' %}
+      {{ link }}&vis_config={{ vis_config | encode_uri }}&toggle=dat,pik,vis&limit=5000"
+    }
+
 }
 
 # Average Sale Price
@@ -329,7 +354,25 @@ parameter: cohort_picker {
     sql: ${sale_price};;
     filters: [status: "-Cancelled, -Returned"]
     value_format_name: usd
+    html:
+    <p style= "color: green" >{{rendered_value}} </p>
+    <p style = "color: green"> Total Sum Price <br> </br> {{ sum_price._rendered_value}} </p> ;;
   }
+
+# test concat fields
+
+  measure: metric_html {
+    type: string
+    sql:
+    CASE
+      WHEN {% parameter metric_selector %} = 'total_profit_html' THEN ${total_profit_html}
+      WHEN {% parameter metric_selector %} = 'gross_margin_perc' THEN ${gross_margin_perc}
+      WHEN {% parameter metric_selector %} = 'avg_spend_per_customer' THEN ${avg_spend_per_customer}
+      ELSE NULL
+    END;;
+    html: <p style = "color: green">{{rendered_value}}</p> ;;
+  }
+
 
 # Total Cost
 
@@ -572,6 +615,8 @@ rendered_value }}</a> ;;
     {%endif%}
     ;;
   }
+
+
 
   # ----- Sets of fields for drilling ------
   set: detail {

@@ -33,6 +33,11 @@ view: users {
   dimension: city {
     type: string
     sql: ${TABLE}."CITY" ;;
+    drill_fields: [gender, state]
+    link: {
+      label: "{{value}} drill down"
+      url: "/dashboards/65?City={{ value | url_encode}}"
+    }
   }
 
   dimension: country {
@@ -61,6 +66,15 @@ view: users {
     ]
     sql: ${TABLE}."CREATED_AT" ;;
   }
+
+  dimension: current {
+    type: date
+    sql: CURRENT_DATE ;;
+  }
+
+
+
+
 
   dimension: email {
     type: string
@@ -108,7 +122,11 @@ view: users {
   dimension: traffic_source {
     type: string
     sql: ${TABLE}."TRAFFIC_SOURCE" ;;
-    drill_fields: [age_group, gender, is_new_customer]
+    drill_fields: [gender, state]
+    link: {
+      label: "{{value}} drill down"
+      url: "/dashboards/65?Gender={{ _filters['users.gender'] | url_encode}}&State={{ _filters['users.state'] | url_encode}}"
+    }
   }
 
   # dimension: email or not
@@ -153,6 +171,18 @@ view: users {
     sql: DATEDIFF(month, ${created_date}, current_date) ;;
   }
 
+# test parameter stuff
+
+  parameter: num_generator {
+    type: number
+    default_value: "2"
+  }
+
+  measure: cr_calculated {
+    type: number
+    sql: {% parameter num_generator %}/100;;
+  }
+
   dimension: cohort_group {
     type: tier
     sql: ${days_since_signup} ;;
@@ -163,6 +193,7 @@ view: users {
   measure: avg_days_from_signup {
     type: average
     sql: ${days_since_signup} ;;
+
   }
 
   measure: avg_months_from_signup {
@@ -179,4 +210,5 @@ view: users {
     type: count
     drill_fields: [users.id, users.last_name, users.first_name, events.count, order_items.count]
   }
+
 }
