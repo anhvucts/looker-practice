@@ -80,6 +80,8 @@ explore: order_items {
   #   unless: [users.id]
   #}
 
+
+
   view_label: "@{industry} Cohort Analysis"
   join: inventory_items {
     type: left_outer
@@ -100,6 +102,12 @@ explore: order_items {
     sql_on: ${inventory_items.product_id} = ${products.id} ;;
     relationship: many_to_one
     view_label: "Others"
+  }
+
+  join: brand_rank_by_sales {
+    type: left_outer
+    sql_on: ${products.brand} = ${brand_rank_by_sales.brand} ;;
+    relationship: many_to_one
   }
 
   join: distribution_centers {
@@ -130,8 +138,10 @@ explore: order_items {
     view_label: "@{industry} Cohort Analysis"
   }
   #fields: [ALL_FIELDS*, -order_items.created_html, -users.id]
-  }
 
+
+
+}
 explore: products {
   join: distribution_centers {
     type: left_outer
@@ -139,7 +149,7 @@ explore: products {
     relationship: many_to_one
   }
 
-  ## sql_always_where: ${products.category} <> 'Jeans';;
+  sql_always_where: ${products.category} <> 'Jeans';;
 }
 
 explore: users {
@@ -160,6 +170,7 @@ explore: users {
     relationship: one_to_one
   }
 
+  sql_always_where: ${created_year} = 2021 ;;
 
   # access_filter: {
   #   user_attribute: email_yahoo_test
@@ -199,6 +210,7 @@ explore: user_facts_ndt {
     relationship: one_to_one
     type: left_outer
   }
+
 }
 
 explore: inventory_facts {

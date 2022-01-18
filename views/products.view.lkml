@@ -17,6 +17,7 @@ view: products {
       label: "{{value}} performance breakdown dashboard"
       url: "/dashboards/42?Brand={{ value | url_encode}}"
   }
+
 }
 
 

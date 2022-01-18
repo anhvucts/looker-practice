@@ -13,6 +13,7 @@ view: user_facts {
       derived_column: order_rank_sales_price {
         sql: rank() over (partition by user_id order by sum_price) ;;
       }
+
     }
     persist_for: "24 hours"
   }

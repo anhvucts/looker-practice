@@ -15,6 +15,7 @@ view: users {
     type: string
     sql: CONCAT(${city}, ' ', ${state});;
     group_label: "Demographics"
+
   }
 
   dimension: age {
@@ -65,15 +66,28 @@ view: users {
       year
     ]
     sql: ${TABLE}."CREATED_AT" ;;
+
   }
 
+  dimension: created {
+    type: date
+    sql: ${created_date} ;;
+    link: {
+      label: "{{value}} drill down"
+      url: "/dashboards/65?Gender={{ _filters['users.gender'] | url_encode}}&State={{ _filters['users.state'] | url_encode}}
+      &Date+Input={{filterable_value}}"
+    }
+}
   dimension: current {
     type: date
     sql: CURRENT_DATE ;;
   }
 
 
-
+  filter: date_input {
+    type: date
+    sql: {% condition date_input %} ${users.created_date} {% endcondition %};;
+  }
 
 
   dimension: email {
@@ -122,11 +136,8 @@ view: users {
   dimension: traffic_source {
     type: string
     sql: ${TABLE}."TRAFFIC_SOURCE" ;;
-    drill_fields: [gender, state]
-    link: {
-      label: "{{value}} drill down"
-      url: "/dashboards/65?Gender={{ _filters['users.gender'] | url_encode}}&State={{ _filters['users.state'] | url_encode}}"
-    }
+
+
   }
 
   # dimension: email or not
@@ -173,14 +184,14 @@ view: users {
 
 # test parameter stuff
 
-  parameter: num_generator {
+  parameter: cr_generator {
     type: number
-    default_value: "2"
   }
 
   measure: cr_calculated {
     type: number
-    sql: {% parameter num_generator %}/100;;
+    sql: NULLIF({% parameter cr_generator %}/100, 0);;
+    value_format_name: percent_1
   }
 
   dimension: cohort_group {
@@ -209,6 +220,19 @@ view: users {
   measure: count {
     type: count
     drill_fields: [users.id, users.last_name, users.first_name, events.count, order_items.count]
+    #drill_fields: [gender, state]
+
   }
 
+  measure: from_target {
+    type: number
+    sql: (1000000000 - ${count})/1000000000 ;;
+    value_format_name: percent_3
+
+  }
+  measure: count_html {
+    type: count
+    html: <p>{{rendered_value}} <br> {{users.from_target._rendered_value}} </br>
+    <br>from reaching target </br> </p>;;
+  }
 }

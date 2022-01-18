@@ -35,6 +35,27 @@ measure: metric {
   ;;
 }
 
+parameter: dim_picker {
+  type: string
+  allowed_value: {
+    value: "country"
+  }
+  allowed_value: {
+    value: "brand"
+  }
+}
+
+dimension: selected_dim {
+  type: string
+  sql:
+    CASE
+      WHEN {% parameter dim_picker %} = 'country' OR {% parameter dim_picker %} = 'COUNTRY' THEN ${users.country}
+      WHEN {% parameter dim_picker %} = 'brand' OR {% parameter dim_picker %} = 'BRAND'THEN ${products.brand}
+    ELSE NULL
+    END  ;;
+}
+
+
 # create comparison time templated filters
 
 filter: timeframe_1 {
@@ -119,6 +140,7 @@ parameter: cohort_picker {
       url: "/dashboards/65?State={{ _filters['state'] | url_encode }}
       &Gender={{ _filters['gender'] | url_encode}} & {{value}} | url_encode}}"
     }
+    order_by_field: brand_rank_by_sales.rnk
 }
 
 
@@ -615,7 +637,6 @@ rendered_value }}</a> ;;
     {%endif%}
     ;;
   }
-
 
 
   # ----- Sets of fields for drilling ------
