@@ -157,6 +157,7 @@ explore: users {
   #   field: state
   #   user_attribute: state
   # }
+
 # joining a derived table
   # group_label: "Users and their purchasing behaviors"
   join: user_order_facts {

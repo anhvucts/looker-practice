@@ -143,6 +143,13 @@ parameter: cohort_picker {
     order_by_field: brand_rank_by_sales.rnk
 }
 
+### test filter suggestions
+
+  dimension: city {
+    type: string
+    suggest_explore: users
+    suggest_dimension: users.city
+  }
 
 
 ## -- DIMENSIONS AND MEASURES --- ##
