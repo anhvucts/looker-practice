@@ -5,9 +5,9 @@ view: customer_purchase_behavior {
         COUNT(DISTINCT(id)) AS customer_lifetime_orders,
         ROUND(SUM(sale_price), 1) AS customer_lifetime_revenues,
         MIN(created_at) AS first_purchase_date,
-        MAX(created_At) AS last_purchase_date,
-        DATEDIFF(year, MIN(created_at), MAX(created_at)) AS years_being_alive,
-        DATEDIFF(day, MAX(created_at), CURRENT_DATE()) AS days_since_last_purchase,
+        MAX(created_at) AS last_purchase_date,
+        date_diff(MAX(DATE(created_at)), MIN(DATE(created_at)), year) AS years_being_alive,
+        date_diff(CURRENT_DATE(), MAX(DATE(created_at)), day) AS days_since_last_purchase,
         CASE
           WHEN COUNT(DISTINCT(id)) = 1 THEN '1 Order'
           WHEN COUNT(DISTINCT(id)) = 2 THEN '2 Orders'
@@ -60,15 +60,15 @@ view: customer_purchase_behavior {
     sql: ${TABLE}.CUSTOMER_LIFETIME_REVENUES_BUCKET;;
   }
 
-  dimension_group: first_purchase_date {
+  dimension: first_purchase_date {
     label: "First Order"
-    type: time
+    type: date
     sql: ${TABLE}.FIRST_PURCHASE_DATE;;
   }
 
-  dimension_group: last_purchase_date {
+  dimension: last_purchase_date {
     label: "Last Order"
-    type: time
+    type: date
     sql: ${TABLE}.LAST_PURCHASE_DATE;;
   }
 
@@ -141,8 +141,8 @@ view: customer_purchase_behavior {
       user_id,
       customer_lifetime_orders,
       customer_lifetime_revenues,
-      first_purchase_date_time,
-      last_purchase_date_time,
+      first_purchase_date,
+      last_purchase_date,
       years_being_alive,
       days_since_last_purchase
     ]

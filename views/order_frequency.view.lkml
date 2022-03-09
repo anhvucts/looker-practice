@@ -13,7 +13,7 @@ view: order_frequency {
         id,
         created_at,
         order_rank,
-        DATEDIFF(day, previous_order_date, created_at) AS days_from_prev_order
+        date_diff(created_at, previous_order_date, day) AS days_from_prev_order
       FROM S
        ;;
   }

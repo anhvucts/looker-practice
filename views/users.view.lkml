@@ -168,7 +168,7 @@ view: users {
   # dimension: days since signup
   dimension: days_since_signup {
     type: number
-    sql: DATEDIFF(day, ${created_date}, current_date);; # redshift syntax
+    sql: date_diff(current_date, ${created_date},  day);; # redshift syntax
   }
 
 
@@ -179,7 +179,7 @@ view: users {
 
   dimension: months_since_signup {
     type: number
-    sql: DATEDIFF(month, ${created_date}, current_date) ;;
+    sql: date_diff(current_date, ${created_date}, month) ;;
   }
 
 # test parameter stuff
