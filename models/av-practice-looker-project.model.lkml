@@ -1,4 +1,4 @@
-connection: "snowlooker"
+connection: "looker_partner_demo"
 label: "Fashion.ly analytics project"
 # include all the views
 include: "/views/**/*.view"
@@ -147,6 +147,7 @@ explore: products {
     type: left_outer
     sql_on: ${products.distribution_center_id} = ${distribution_centers.id} ;;
     relationship: many_to_one
+    view_label: "Others"
   }
 
   sql_always_where: ${products.category} <> 'Jeans';;

@@ -172,6 +172,8 @@ parameter: cohort_picker {
       raw,
       time,
       date,
+      second,
+      hour,
       week,
       month,
       quarter,
