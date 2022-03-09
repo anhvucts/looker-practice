@@ -1,13 +1,13 @@
 include: "/views/geography_fields.view"
 view: users {
   extends: [geography_fields]
-  sql_table_name: "PUBLIC"."USERS";;
+  sql_table_name: users;;
   drill_fields: [id]
 
   dimension: id {
     primary_key: yes
     type: number
-    sql: ${TABLE}."ID" ;;
+    sql: ${TABLE}.ID;;
     group_label: "Identifiers"
   }
 
@@ -20,7 +20,7 @@ view: users {
 
   dimension: age {
     type: number
-    sql: ${TABLE}."AGE" ;;
+    sql: ${TABLE}.AGE;;
     group_label: "Demographics"
   }
 
@@ -33,7 +33,7 @@ view: users {
 
   dimension: city {
     type: string
-    sql: ${TABLE}."CITY" ;;
+    sql: ${TABLE}.CITY;;
     drill_fields: [gender, state]
     link: {
       label: "{{value}} drill down"
@@ -44,7 +44,7 @@ view: users {
   dimension: country {
     type: string
     map_layer_name: countries
-    sql: ${TABLE}."COUNTRY" ;;
+    sql: ${TABLE}.COUNTRY;;
   }
 
   dimension: state_location {
@@ -65,7 +65,7 @@ view: users {
       quarter,
       year
     ]
-    sql: ${TABLE}."CREATED_AT" ;;
+    sql: ${TABLE}.CREATED_AT;;
 
   }
 
@@ -92,23 +92,23 @@ view: users {
 
   dimension: email {
     type: string
-    sql: ${TABLE}."EMAIL" ;;
+    sql: ${TABLE}.EMAIL;;
     #required_access_grants: [exclude_email_address]
   }
 
   dimension: first_name {
     type: string
-    sql: ${TABLE}."FIRST_NAME" ;;
+    sql: ${TABLE}.FIRST_NAME;;
   }
 
   dimension: gender {
     type: string
-    sql: ${TABLE}."GENDER" ;;
+    sql: ${TABLE}.GENDER;;
   }
 
   dimension: last_name {
     type: string
-    sql: ${TABLE}."LAST_NAME" ;;
+    sql: ${TABLE}.LAST_NAME;;
   }
 
   dimension: first_last_name {
@@ -119,23 +119,23 @@ view: users {
 
   dimension: latitude {
     type: number
-    sql: ${TABLE}."LATITUDE" ;;
+    sql: ${TABLE}.LATITUDE;;
   }
 
   dimension: longitude {
     type: number
-    sql: ${TABLE}."LONGITUDE" ;;
+    sql: ${TABLE}.LONGITUDE;;
   }
 
   dimension: state {
     type: string
-    sql: ${TABLE}."STATE" ;;
+    sql: ${TABLE}.STATE;;
     # required_access_grants: [state]
   }
 
   dimension: traffic_source {
     type: string
-    sql: ${TABLE}."TRAFFIC_SOURCE" ;;
+    sql: ${TABLE}.TRAFFIC_SOURCE;;
 
 
   }
@@ -148,7 +148,7 @@ view: users {
 
   dimension: zip {
     type: zipcode
-    sql: ${TABLE}."ZIP" ;;
+    sql: ${TABLE}.ZIP;;
   }
   # dimension: city + state
   dimension: place {

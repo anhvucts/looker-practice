@@ -16,29 +16,29 @@ view: user_order_facts {
   dimension: user_id {
     primary_key: yes # IMPORTANT TO KEEP THE PRIMARY KEY DECLARED
     type: number
-    sql: ${TABLE}."USER_ID" ;;
+    sql: ${TABLE}.USER_ID;;
   }
 
   dimension: total_orders {
     type: number
-    sql: ${TABLE}."TOTAL_ORDERS" ;;
+    sql: ${TABLE}.TOTAL_ORDERS;;
   }
 
   dimension: total_order_values {
     type: number
-    sql: ${TABLE}."TOTAL_ORDER_VALUES" ;;
+    sql: ${TABLE}.TOTAL_ORDER_VALUES;;
   }
 
   dimension_group: first_purchase_date {
     type: time
     timeframes: [date, month, year]
-    sql: ${TABLE}."FIRST_PURCHASE_DATE" ;;
+    sql: ${TABLE}.FIRST_PURCHASE_DATE;;
   }
 
   dimension_group: last_purchase_date {
     type: time
     timeframes: [date, month, year]
-    sql: ${TABLE}."LAST_PURCHASE_DATE" ;;
+    sql: ${TABLE}.LAST_PURCHASE_DATE;;
   }
 
   measure: average_lifetime_value {

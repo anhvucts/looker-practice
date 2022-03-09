@@ -15,7 +15,7 @@ view: inventory_facts {
   dimension: product_sku {
     primary_key: yes
     type: string
-    sql: ${TABLE}."PRODUCT_SKU";;
+    sql: ${TABLE}.PRODUCT_SKU";;
   }
 
   dimension: total_inventory_cost {

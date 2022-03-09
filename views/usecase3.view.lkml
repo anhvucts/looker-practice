@@ -15,7 +15,7 @@ view: usecase3 {
 
   dimension: order_id {
     type: number
-    sql: ${TABLE}."ORDER_ID" ;;
+    sql: ${TABLE}.ORDER_ID;;
     primary_key: yes
   }
 

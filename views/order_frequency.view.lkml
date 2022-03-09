@@ -25,29 +25,29 @@ view: order_frequency {
 
   dimension: user_id {
     type: number
-    sql: ${TABLE}."USER_ID" ;;
+    sql: ${TABLE}.USER_ID;;
   }
 
   dimension: id {
     type: number
-    sql: ${TABLE}."ID" ;;
+    sql: ${TABLE}.ID;;
     primary_key: yes
     view_label: "Identifiers"
   }
 
   dimension_group: created_at {
     type: time
-    sql: ${TABLE}."CREATED_AT" ;;
+    sql: ${TABLE}.CREATED_AT;;
   }
 
   dimension: order_rank {
     type: number
-    sql: ${TABLE}."ORDER_RANK" ;;
+    sql: ${TABLE}.ORDER_RANK;;
   }
 
   dimension: days_from_prev_order {
     type: number
-    sql: ${TABLE}."DAYS_FROM_PREV_ORDER" ;;
+    sql: ${TABLE}.DAYS_FROM_PREV_ORDER;;
   }
 
   # add new dimension: is_repeating_customer

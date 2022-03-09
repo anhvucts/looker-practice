@@ -23,7 +23,7 @@ view: usecase1 {
     label: "User ID"
     primary_key: yes
     type: number
-    sql: ${TABLE}."USER_ID" ;;
+    sql: ${TABLE}.USER_ID;;
   }
   dimension: total_lifetime_orders {
     type: number
@@ -53,13 +53,13 @@ view: usecase1 {
   dimension_group: first_order {
     type: time
     timeframes: [date, month, year]
-    sql: ${TABLE}."FIRST_ORDER_DATE" ;;
+    sql: ${TABLE}.FIRST_ORDER_DATE;;
   }
 
   dimension_group: last_order{
     type: time
     timeframes: [date, month, year]
-    sql: ${TABLE}."LAST_ORDER_DATE" ;;
+    sql: ${TABLE}.LAST_ORDER_DATE;;
   }
 
   dimension_group: since_latest_order {

@@ -1,17 +1,17 @@
 view: products {
-  sql_table_name: "PUBLIC"."PRODUCTS"
+  sql_table_name: products
     ;;
   drill_fields: [id]
 
   dimension: id {
     primary_key: yes
     type: number
-    sql: ${TABLE}."ID" ;;
+    sql: ${TABLE}.ID;;
   }
 
   dimension: brand {
     type: string
-    sql: ${TABLE}."BRAND" ;;
+    sql: ${TABLE}.BRAND;;
     drill_fields: [category, id]
     link: {
       label: "{{value}} performance breakdown dashboard"
@@ -24,7 +24,7 @@ view: products {
 
   dimension: br {
     type: string
-    sql: ${TABLE}."BRAND" ;;
+    sql: ${TABLE}.BRAND;;
     drill_fields: [users.state, users.gender]
     link: {
       label: "{{value}} sales breakdown"
@@ -34,7 +34,7 @@ view: products {
 
   dimension: category {
     type: string
-    sql: ${TABLE}."CATEGORY" ;;
+    sql: ${TABLE}.CATEGORY;;
     link: {
       label: "Google Search"
       url: "https://www.google.com/search?q={{value}}"
@@ -46,33 +46,33 @@ view: products {
 
   dimension: cost {
     type: number
-    sql: ${TABLE}."COST" ;;
+    sql: ${TABLE}.COST;;
   }
 
   dimension: department {
     type: string
-    sql: ${TABLE}."DEPARTMENT" ;;
+    sql: ${TABLE}.DEPARTMENT;;
   }
 
   dimension: distribution_center_id {
     type: number
     # hidden: yes
-    sql: ${TABLE}."DISTRIBUTION_CENTER_ID" ;;
+    sql: ${TABLE}.DISTRIBUTION_CENTER_ID;;
   }
 
   dimension: name {
     type: string
-    sql: ${TABLE}."NAME" ;;
+    sql: ${TABLE}.NAME;;
   }
 
   dimension: retail_price {
     type: number
-    sql: ${TABLE}."RETAIL_PRICE" ;;
+    sql: ${TABLE}.RETAIL_PRICE;;
   }
 
   dimension: sku {
     type: string
-    sql: ${TABLE}."SKU" ;;
+    sql: ${TABLE}.SKU;;
   }
 
   measure: count {

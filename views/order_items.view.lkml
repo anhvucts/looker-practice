@@ -1,5 +1,5 @@
 view: order_items {
-  sql_table_name: "PUBLIC"."ORDER_ITEMS";;
+  sql_table_name: order_items;;
   drill_fields: [id]
 
 ## --- PARAMETERS --- ##
@@ -157,7 +157,7 @@ parameter: cohort_picker {
     primary_key: yes
     alias: [orderline_id]
     type: number
-    sql: ${TABLE}."ID" ;;
+    sql: ${TABLE}.id ;;
     group_label: "Identifiers"
   }
 
@@ -180,14 +180,14 @@ parameter: cohort_picker {
       year,
       month_name
     ]
-    sql: ${TABLE}."CREATED_AT" ;;
+    sql: ${TABLE}.CREATED_AT ;;
     group_label: "Orders"
   }
 
   # dimension_group: order_created {
   #   type: time
   #   timeframes: [raw, date, month, year, month_name, day_of_week]
-  #   sql: ${TABLE}."CREATED_AT";;
+  #   sql: ${TABLE}.CREATED_AT";;
   # }
 
   # dimension_group: days_from_signup {
@@ -217,20 +217,20 @@ parameter: cohort_picker {
       quarter,
       year
     ]
-    sql: ${TABLE}."DELIVERED_AT" ;;
+    sql: ${TABLE}.DELIVERED_AT;;
     group_label: "Delivery"
   }
 
   dimension: inventory_item_id {
     type: number
     # hidden: yes
-    sql: ${TABLE}."INVENTORY_ITEM_ID" ;;
+    sql: ${TABLE}.INVENTORY_ITEM_ID;;
     group_label: "Identifiers"
   }
 
   dimension: order_id { # this can be considered a transaction ID
     type: number
-    sql: ${TABLE}."ORDER_ID" ;;
+    sql: ${TABLE}.ORDER_ID ;;
     group_label: "Identifiers"
   }
 
@@ -245,13 +245,13 @@ parameter: cohort_picker {
       quarter,
       year
     ]
-    sql: ${TABLE}."RETURNED_AT" ;;
+    sql: ${TABLE}.RETURNED_AT;;
     group_label: "Delivery"
   }
 
   dimension: sale_price {
     type: number
-    sql: ${TABLE}."SALE_PRICE" ;;
+    sql: ${TABLE}.SALE_PRICE;;
     group_label: "Orders"
   }
 
@@ -267,20 +267,20 @@ parameter: cohort_picker {
       year,
       month_name
     ]
-    sql: ${TABLE}."SHIPPED_AT" ;;
+    sql: ${TABLE}.SHIPPED_AT;;
     group_label: "Delivery"
   }
 
   dimension: status {
     type: string
-    sql: ${TABLE}."STATUS" ;;
+    sql: ${TABLE}.STATUS;;
     group_label: "Orders"
   }
 
   dimension: user_id {
     type: number
     # hidden: yes
-    sql: ${TABLE}."USER_ID" ;;
+    sql: ${TABLE}.USER_ID;;
     group_label: "Identifiers"
   }
 

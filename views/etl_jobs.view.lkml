@@ -1,12 +1,12 @@
 view: etl_jobs {
-  sql_table_name: "PUBLIC"."ETL_JOBS"
+  sql_table_name: etl_jobs
     ;;
   drill_fields: [id]
 
   dimension: id {
     primary_key: yes
     type: number
-    sql: ${TABLE}."ID" ;;
+    sql: ${TABLE}.ID;;
   }
 
   dimension_group: completed {
@@ -23,7 +23,7 @@ view: etl_jobs {
       quarter,
       year
     ]
-    sql: ${TABLE}."COMPLETED_AT" ;;
+    sql: ${TABLE}.COMPLETED_AT;;
   }
 
   measure: count {

@@ -32,55 +32,55 @@ view: customer_purchase_behavior {
 
   dimension: user_id {
     type: number
-    sql: ${TABLE}."USER_ID" ;;
+    sql: ${TABLE}.USER_ID;;
     primary_key: yes
   }
 
   dimension: customer_lifetime_orders {
     hidden: yes
     type: number
-    sql: ${TABLE}."CUSTOMER_LIFETIME_ORDERS" ;;
+    sql: ${TABLE}.CUSTOMER_LIFETIME_ORDERS;;
   }
 
   dimension: customer_lifetime_orders_bucket {
     label: "Customer Lifetime Orders"
     type: string
-    sql: ${TABLE}."CUSTOMER_LIFETIME_ORDERS_BUCKET" ;;
+    sql: ${TABLE}.CUSTOMER_LIFETIME_ORDERS_BUCKET;;
   }
 
   dimension: customer_lifetime_revenues {
     hidden: yes
     type: number
-    sql: ${TABLE}."CUSTOMER_LIFETIME_REVENUES" ;;
+    sql: ${TABLE}.CUSTOMER_LIFETIME_REVENUES;;
   }
 
   dimension: customer_lifetime_revenues_bucket {
     label: "Customer Lifetime Revenue"
     type: string
-    sql: ${TABLE}."CUSTOMER_LIFETIME_REVENUES_BUCKET" ;;
+    sql: ${TABLE}.CUSTOMER_LIFETIME_REVENUES_BUCKET;;
   }
 
   dimension_group: first_purchase_date {
     label: "First Order"
     type: time
-    sql: ${TABLE}."FIRST_PURCHASE_DATE" ;;
+    sql: ${TABLE}.FIRST_PURCHASE_DATE;;
   }
 
   dimension_group: last_purchase_date {
     label: "Last Order"
     type: time
-    sql: ${TABLE}."LAST_PURCHASE_DATE" ;;
+    sql: ${TABLE}.LAST_PURCHASE_DATE;;
   }
 
   dimension: years_being_alive {
     type: number
-    sql: ${TABLE}."YEARS_BEING_ALIVE" ;;
+    sql: ${TABLE}.YEARS_BEING_ALIVE;;
   }
 
   dimension: days_since_last_purchase {
     label: "Days Since Latest Order"
     type: number
-    sql: ${TABLE}."DAYS_SINCE_LAST_PURCHASE" ;;
+    sql: ${TABLE}.DAYS_SINCE_LAST_PURCHASE;;
   }
 
   dimension: is_alive {

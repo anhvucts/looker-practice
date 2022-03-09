@@ -6,9 +6,9 @@ view: brand_rank_by_sales {
          COALESCE(SUM(order_items.sale_price ), 0) AS total_revenue,
          RANK() OVER (ORDER BY COALESCE(SUM(order_items.sale_price ), 0) DESC) AS RNK
         FROM
-         public.order_items AS order_items
-         LEFT JOIN public.inventory_items AS inventory_items ON order_items.inventory_item_id = inventory_items.id
-         LEFT JOIN public.products AS products ON inventory_items.product_id = products.id
+         order_items AS order_items
+         LEFT JOIN inventory_items AS inventory_items ON order_items.inventory_item_id = inventory_items.id
+         LEFT JOIN products AS products ON inventory_items.product_id = products.id
          WHERE
          1=1
          AND {% condition order_items.created_date %} order_items.created_at {% endcondition %}

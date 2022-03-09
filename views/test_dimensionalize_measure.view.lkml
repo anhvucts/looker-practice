@@ -11,12 +11,12 @@ view: test_dimensionalize_measure {
 
   dimension: city {
     type: string
-    sql: ${TABLE}."CITY" ;;
+    sql: ${TABLE}.CITY;;
   }
 
   dimension: total_orders {
     type: number
-    sql: ${TABLE}."TOTAL_ORDERS" ;;
+    sql: ${TABLE}.TOTAL_ORDERS;;
   }
 
   measure: avg_count {

@@ -19,7 +19,7 @@ view: user_facts {
   }
   dimension: order_id {
     type: number
-    sql: ${TABLE}."ORDER_ID" ;;
+    sql: ${TABLE}.ORDER_ID;;
   }
   dimension: user_id {
     type: number
