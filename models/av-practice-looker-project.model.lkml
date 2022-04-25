@@ -26,6 +26,7 @@ datagroup: ecommerce_etl {
 
 access_grant: see_events_explore {
   user_attribute: see_events_explore
+  allowed_values: ["%"]
 }
 
 persist_with: ecommerce_etl
