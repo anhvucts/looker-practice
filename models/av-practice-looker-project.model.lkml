@@ -24,10 +24,10 @@ access_grant: state {
 #   user_attribute: email # the field email is not accessible to anyone
 # }
 
-# access_grant: see_events_explore {
-#   user_attribute: see_events_explore
-#   allowed_values: ["yes"]
-# }
+access_grant: see_events_explore {
+  user_attribute: see_events_explore
+  allowed_values: ["yes"]
+}
 
 persist_with: ecommerce_etl
 
@@ -56,6 +56,7 @@ explore: events {
     sql_on: ${events.user_id} = ${users.id} ;;
     relationship: many_to_one
   }
+  required_access_grants: [see_events_explore]
   # this puts the explore in a different field in Explore dropdown menu
 }
 
