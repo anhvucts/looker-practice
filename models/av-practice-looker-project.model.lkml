@@ -11,10 +11,10 @@ datagroup: ecommerce_etl {
   max_cache_age: "12 hours"
 }
 
-# access_grant: state {
-#   user_attribute: state
-#   allowed_values: ["California", "Arizona"]
-# }
+access_grant: state {
+  user_attribute: state
+  allowed_values: ["California", "Arizona"]
+}
 
 # access_grant: exclude_yahoo_email {
 #   user_attribute: email_yahoo_test
@@ -24,10 +24,10 @@ datagroup: ecommerce_etl {
 #   user_attribute: email # the field email is not accessible to anyone
 # }
 
-access_grant: see_events_explore {
-  user_attribute: see_events_explore
-  allowed_values: ["%"]
-}
+# access_grant: see_events_explore {
+#   user_attribute: see_events_explore
+#   allowed_values: ["yes"]
+# }
 
 persist_with: ecommerce_etl
 
@@ -56,9 +56,6 @@ explore: events {
     sql_on: ${events.user_id} = ${users.id} ;;
     relationship: many_to_one
   }
-
-  required_access_grants: [see_events_explore]
-
   # this puts the explore in a different field in Explore dropdown menu
 }
 
@@ -186,6 +183,8 @@ explore: users {
   #   user_attribute: email_yahoo_test
   #   field: users.email
   # }
+
+  required_access_grants: [state]
 
 
 }
