@@ -4,6 +4,60 @@ view: users {
   sql_table_name: users;;
   drill_fields: [id]
 
+### dynamic field picker
+
+parameter: cohort_picker {
+  type: unquoted
+  allowed_value: {
+    label: "City"
+    value: "city"
+  }
+  allowed_value: {
+    label: "Country"
+    value: "country"
+  }
+  allowed_value: {
+    label: "Gender"
+    value: "gender"
+  }
+}
+
+dimension: selected_cohort {
+  type: string
+  label_from_parameter: cohort_picker
+  sql: ${TABLE}.{% parameter cohort_picker %};;
+}
+
+  parameter: metric_picker {
+    type: unquoted
+    allowed_value: {
+      label: "Average days from signup"
+      value: "avg_days_from_signup"
+    }
+    allowed_value: {
+      label: "Max days from signup"
+      value: "max_days_from_signup"
+    }
+    allowed_value: {
+      label: "Total users"
+      value: "count"
+    }
+  }
+
+  measure: selected_metric {
+    type: string
+    label_from_parameter: metric_picker
+    sql:
+    CASE
+      WHEN {% parameter metric_picker %} = 'Average days from signup' THEN ${avg_days_from_signup}
+      WHEN {% parameter metric_picker %} = 'Max days from signup' THEN ${max_days_from_signup}
+      WHEN {% parameter metric_picker %} = 'Total users' THEN ${count}
+    ELSE NULL
+    END
+    ;;
+  }
+
+
   dimension: id {
     primary_key: yes
     type: number
@@ -163,6 +217,18 @@ view: users {
     tiers: [15, 26, 36, 51, 66]
     style:  integer
     drill_fields: [gender]
+    # link: {
+    #   label: "User info"
+    #   url: "
+    #   { % if _explore._name == users %}
+    #     /ctspartner.de.looker.com/dashboards/3
+    #   {% elsif _explore._name == order_items %}
+    #   /ctspartner.de.looker.com/dashboards/1
+    #   {% else %}
+    #   /ctspartner.de.looker.com/dashboards/6
+    #   {% endif %}
+    #   "
+    # }
   }
 
   # dimension: days since signup
@@ -204,6 +270,7 @@ view: users {
   measure: avg_days_from_signup {
     type: average
     sql: ${days_since_signup} ;;
+    value_format: "0"
 
   }
 

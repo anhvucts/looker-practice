@@ -29,7 +29,7 @@ view: cohort_tool {
         WHEN {% parameter cohort_picker %} = 'Gender' THEN users.gender
         WHEN {% parameter cohort_picker %} = 'Country' THEN users.country
         WHEN {% parameter cohort_picker %} = 'City' THEN users.city
-      ELSE TO_CHAR(DATE_TRUNC('month', CONVERT_TIMEZONE('UTC', 'America/Los_Angeles', CAST(users.created_at  AS TIMESTAMP_NTZ))), 'YYYY-MM')
+      ELSE CAST(EXTRACT(MONTH FROM users.created_at) AS STRING)
       END as cohort,
       COUNT(DISTINCT(users.id)) AS size
     FROM users
@@ -91,6 +91,7 @@ measure: total_sale_price {
   hidden: yes
   type: sum
   sql: ${order_items.sale_price} ;;
+  value_format_name: usd
 }
 
 measure: avg_sale_price {

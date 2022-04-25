@@ -84,41 +84,47 @@ dimension: timeframe_1_or_2 {
 
 # Cohort picker
 
-parameter: cohort_picker {
-  label: "Choose your cohort"
-  allowed_value: {
-    label: "Age groups"
-    value: "age_bucket"
-  }
-  allowed_value: {
-    label: "Country"
-    value: "country"
-  }
-  allowed_value: {
-    label: "City"
-    value: "city"
-  }
-}
+# parameter: cohort_picker {
+#   label: "Choose your cohort"
+#   allowed_value: {
+#     label: "Status"
+#     value: "status"
+#   }
+#   allowed_value: {
+#     label: "Country"
+#     value: "country"
+#   }
+#   allowed_value: {
+#     label: "City"
+#     value: "city"
+#   }
+# }
 
-  dimension: cohort {
-    description: "Use in conjuction with the Cohort Picker"
-    type: string
-    sql: ${TABLE}.cohort;;
-    label_from_parameter: cohort_picker
-  }
+#   dimension: cohort {
+#     description: "Use in conjuction with the Cohort Picker"
+#     type: string
+#     label_from_parameter: cohort_picker
+#     sql:
+#       CASE
+#         WHEN {% parameter cohort_picker %} = 'Status' THEN ${status}
+#         WHEN {% parameter cohort_picker %} = 'Country' THEN ${users.country}
+#         WHEN {% parameter cohort_picker %} = 'City' THEN ${users.city}
+#       ELSE NULL
+#       END;;
+#   }
 
-  measure: metrics_for_cohorts {
-    type: number
-    sql:
-    CASE
-      WHEN {% parameter metric_selector %} = 'Total profit' THEN ${total_profit_html}
-      WHEN {% parameter metric_selector %} = 'Gross Margin Percentage' THEN ${gross_margin_perc}
-      WHEN {% parameter metric_selector %} = 'Average Spend per Customer' THEN ${avg_spend_per_customer}
-    ELSE NULL
-    END
-    ;;
-    label_from_parameter: metric_selector
-  }
+#   measure: metrics_for_cohorts {
+#     type: number
+#     sql:
+#     CASE
+#       WHEN {% parameter metric_selector %} = 'Total profit' THEN ${total_profit_html}
+#       WHEN {% parameter metric_selector %} = 'Gross Margin Percentage' THEN ${gross_margin_perc}
+#       WHEN {% parameter metric_selector %} = 'Average Spend per Customer' THEN ${avg_spend_per_customer}
+#     ELSE NULL
+#     END
+#     ;;
+#     label_from_parameter: metric_selector
+#   }
 
 
 ## brand filer
@@ -271,11 +277,11 @@ parameter: cohort_picker {
     group_label: "Delivery"
   }
 
-  dimension: status {
-    type: string
-    sql: ${TABLE}.STATUS;;
-    group_label: "Orders"
-  }
+  # dimension: status {
+  #   type: string
+  #   sql: ${TABLE}.STATUS;;
+  #   group_label: "Orders"
+  # }
 
   dimension: user_id {
     type: number
@@ -378,16 +384,14 @@ parameter: cohort_picker {
 
 # Total Gross Revenue
 
-  measure: total_gross_revenue {
-    label: "Total Gross Revenue"
-    description: "Gross revenue excluding cancelled and returned orders"
+  measure: combined_metrics {
+    label: "Total Gross Revenue vs Total Users"
     type: sum
     sql: ${sale_price};;
-    filters: [status: "-Cancelled, -Returned"]
     value_format_name: usd
     html:
-    <p style= "color: green" >{{rendered_value}} </p>
-    <p style = "color: green"> Total Sum Price <br> </br> {{ sum_price._rendered_value}} </p> ;;
+    <p>{{rendered_value}} </p>
+    <p> Total Users <br> </br> {{ users.count._rendered_value}} </p> ;;
   }
 
 # test concat fields
@@ -427,7 +431,7 @@ parameter: cohort_picker {
   measure: total_gross_margin {
     label: "Total Gross Margin Amount"
     type: number
-    sql: ${total_gross_revenue} - ${total_cost};;
+    sql: ${sum_price} - ${total_cost};;
     value_format_name: usd
   }
 
@@ -436,7 +440,7 @@ parameter: cohort_picker {
   measure: avg_gross_margin {
     label: "Average Gross Margin"
     type: number
-    sql: (${total_gross_revenue} - ${total_cost})/NULLIF(${count}, 0);;
+    sql: (${sum_price} - ${total_cost})/NULLIF(${count}, 0);;
     value_format_name: usd
   }
 
@@ -445,7 +449,7 @@ parameter: cohort_picker {
   measure: gross_margin_perc {
     label: "Gross Margin Percentage"
     type: number
-    sql: ${total_gross_margin}/${total_gross_revenue};;
+    sql: ${total_gross_margin}/${sum_price};;
     value_format_name: percent_1
   }
 
@@ -455,7 +459,7 @@ parameter: cohort_picker {
     label: "Number of Items Returned"
     type: count_distinct
     sql: ${id};;
-    filters: [status: "Returned"]
+    #filters: [status: "Returned"]
   }
 
 # Item Return Rate
@@ -473,7 +477,7 @@ parameter: cohort_picker {
     label: "Number of Customers Returning Items"
     type: count_distinct
     sql: ${user_id} ;;
-    filters: [status: "Returned"]
+    #filters: [status: "Returned"]
   }
 
 
@@ -566,7 +570,7 @@ dimension: customer_cohort {
   # total profit measure
   measure: total_profit_example {
     type:  number
-    sql: ${total_gross_revenue} - SUM(${inventory_items.cost}) ;;
+    sql: ${sum_price} - SUM(${inventory_items.cost}) ;;
     value_format_name: usd
     html: <font color="green">{{rendered_value}}</font> ;;
   }
@@ -582,17 +586,17 @@ dimension: customer_cohort {
   # measure count html
   measure: count_html {
     type: count
-    drill_fields: [products.category, total_gross_revenue]
-    html: <a href="{{ link }}&f[total_gross_revenue]=>=50000">{{
+    drill_fields: [products.category, sum_price]
+    html: <a href="{{ link }}&f[sum_price]=>=50000">{{
 rendered_value }}</a> ;;
   }
   # measure count link
   measure: count_link {
     type: count
-    drill_fields: [products.category, total_gross_revenue]
+    drill_fields: [products.category, sum_price]
     link: {
       label: "Revenue breakdown < 50000"
-      url: "{{link}}&f[total_gross_revenue]=>=50000"
+      url: "{{link}}&f[sum_price]=>=50000"
     }
   }
 
@@ -631,9 +635,9 @@ rendered_value }}</a> ;;
   # total profit
 
   measure: total_profit_html {
-    hidden: yes
+    #hidden: yes
     type: number
-    sql: ${total_gross_revenue} - ${total_cost} ;;
+    sql: ${sum_price} - ${total_cost} ;;
     value_format_name: usd
     html: {% if  products.category._in_query and value >= 75000 %}
     <font color = "green" > {{rendered_value}} </font>
@@ -647,6 +651,22 @@ rendered_value }}</a> ;;
     ;;
   }
 
+  measure: total_revenue_html_v2 {
+    label: "Total revenue by category"
+    type: sum
+    sql: ROUND(${sale_price}, 1) ;;
+    value_format_name: usd
+    html: {% if  products.category._in_query and value >= 75000 %}
+          <font color = "green" > {{rendered_value}} </font>
+          {% elsif  products.category._in_query and value >= 50000 and value < 75000 %}
+          <font color = "blue" > {{rendered_value}} </font>
+          {% elsif products.category._in_query %}
+          <font color = "red" > {{rendered_value}} </font>
+          {%else%}
+            {{rendered_value}}
+          {%endif%}
+          ;;
+  }
 
   # ----- Sets of fields for drilling ------
   set: detail {

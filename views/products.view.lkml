@@ -36,7 +36,7 @@ view: products {
     type: string
     sql: ${TABLE}.CATEGORY;;
     link: {
-      label: "Google Search"
+      label: "Conditional links to search engines"
       url: "https://www.google.com/search?q={{value}}"
       icon_url: "https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
     }
