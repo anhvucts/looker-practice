@@ -199,6 +199,11 @@ explore: customer_purchase_behavior{
   }
 }
 
+access_grant: can_see_customer_purchase_behavior_view {
+  user_attribute: can_see_customer_purchase_behavior_view
+  allowed_values: ["yes"]
+}
+
 explore: order_frequency {
   join: users {
     type: left_outer
@@ -209,9 +214,8 @@ explore: order_frequency {
     type: left_outer
     sql_on: ${order_frequency.user_id} = ${customer_purchase_behavior.user_id} ;;
     relationship: many_to_one
+    required_access_grants: [can_see_customer_purchase_behavior_view]
   }
-
-
 }
 
 explore: user_facts_ndt {
