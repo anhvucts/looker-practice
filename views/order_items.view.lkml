@@ -449,7 +449,7 @@ dimension: timeframe_1_or_2 {
   measure: gross_margin_perc {
     label: "Gross Margin Percentage"
     type: number
-    sql: ${total_gross_margin}/${sum_price};;
+    sql: ${total_gross_margin}/NULLIF(${sum_price}, 0);;
     value_format_name: percent_1
   }
 

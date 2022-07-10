@@ -15,6 +15,18 @@ view: inventory_items {
     }
   }
 
+  filter: multi_select_item_ids {
+    type: number
+  }
+
+  dimension: selected_items {
+    type: string
+    sql:
+    CASE
+      WHEN {% condition multi_select_item_ids %} ${id} {% endcondition %} THEN ${id}
+    ELSE NULL END;;
+  }
+
   measure: dynamic_sum {
     type: sum
     sql: ${TABLE}.{% parameter item_to_add_up %} ;;
