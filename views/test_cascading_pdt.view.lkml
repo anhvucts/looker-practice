@@ -32,7 +32,7 @@ view: clean_events_v2 {
       FROM events
        ;;
 
-      sql_step: SELECT * FROM users WHERE user.country = 'Australia' ;;
+      sql_step: SELECT * FROM users WHERE users.country = 'Australia' ;;
     }
   }
 }
