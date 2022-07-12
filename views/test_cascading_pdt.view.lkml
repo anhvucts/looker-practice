@@ -30,7 +30,7 @@ view: clean_events_v2 {
     create_process: {
       sql_step: SELECT *
       FROM events
-      WHERE type NOT IN ('test', 'staff') ;;
+       ;;
 
       sql_step: SELECT * FROM users WHERE user.country = 'Australia' ;;
     }
